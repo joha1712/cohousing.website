@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bofællesskab</title>
     <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/darkly/bulmaswatch.min.css">
+    <link rel="stylesheet" href="style.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>        
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>    
   </head>
@@ -23,13 +24,21 @@
         </section>
 
         <section class="section">
-          <div class="container">        
+         
             <div class="tile is-ancestor">
                 
                 <div class="tile" v-for="dinner in dinnerDays">
                     <div class="tile is-child box has-text-centered">
                         <p class="title is-4">{{ dinner.dayName }}</p>
                         <p class="subtitle is-6">{{ dinner.dayDateName }}</p>
+                        <ul class="has-text-left">
+                            <li v-for="person in dinner.persons">                                
+                                <label class="checkbox">
+                                    <input type="checkbox" v-model="person.isAttending">
+                                        {{ person.name }}                                    
+                                </label>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                
@@ -47,23 +56,43 @@
             dinnerDays: [
                 { 
                     dayName : "Mandag",
-                    dayDateName : "9. Juni" 
+                    dayDateName : "9. Juni",
+                    persons: [
+                        { name: "Jonas", isAttending : true },
+                        { name: "Eva", isAttending : false }
+                    ]
                 },
                 { 
                     dayName : "Tirsdag",
-                    dayDateName : "10. Juni" 
+                    dayDateName : "10. Juni",
+                    persons: [
+                        { name: "Jonas" },
+                        { name: "Eva" }
+                    ]
                 },
                 { 
                     dayName : "Onsdag",
-                    dayDateName : "11. Juni" 
+                    dayDateName : "11. Juni",
+                    persons: [
+                        { name: "Jonas" },
+                        { name: "Eva" }
+                    ]
                 },
                 { 
                     dayName : "Torsdag",
-                    dayDateName : "12. Juni" 
+                    dayDateName : "12. Juni",
+                    persons: [
+                        { name: "Jonas" },
+                        { name: "Eva" }
+                    ]
                 },
                 { 
                     dayName : "Fredag",
-                    dayDateName : "13. Juni" 
+                    dayDateName : "13. Juni",
+                    persons: [
+                        { name: "Jonas" },
+                        { name: "Eva" }
+                    ]
                 }
             ]
         }
