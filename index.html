@@ -14,10 +14,10 @@
       <section class="section">
         <div class="container">
           <h1 class="title">
-              Buske bofælleskab
+              {{ pageTitle }}
           </h1>
           <p class="subtitle">
-              Fællesspisning
+              {{ pageSubtitle }}
           </p>
         </div>
         </section>
@@ -25,41 +25,14 @@
         <section class="section">
           <div class="container">        
             <div class="tile is-ancestor">
-                <div class="tile">
+                
+                <div class="tile" v-for="dinner in dinnerDays">
                     <div class="tile is-child box has-text-centered">
-                        <p class="title is-4">Mandag</p>
-                        <p class="subtitle is-6">9. juni</p>
-                    </div>
-                    
-                </div>
-      
-                <div class="tile">
-                    <div class="tile is-child box has-text-centered">
-                        <p class="title is-4">Tirsdag</p>
-                        <p class="subtitle is-6">10. juni</p>
+                        <p class="title is-4">{{ dinner.dayName }}</p>
+                        <p class="subtitle is-6">{{ dinner.dayDateName }}</p>
                     </div>
                 </div>
-
-                <div class="tile">
-                    <div class="tile is-child box has-text-centered">
-                        <p class="title is-4">Onsdag</p>
-                        <p class="subtitle is-6">11. juni</p>
-                    </div>
-                </div>
-
-                <div class="tile">
-                    <div class="tile is-child box has-text-centered">
-                        <p class="title is-4">Torsdag</p>
-                        <p class="subtitle is-6">12. juni</p>
-                    </div>
-                </div>
-
-                <div class="tile">
-                    <div class="tile is-child box has-text-centered">
-                        <p class="title is-4">Fredag</p>
-                        <p class="subtitle is-6">13. juni</p>
-                    </div>
-                </div>
+               
             </div>
         </div> 
       </section>
@@ -67,7 +40,33 @@
     </div>
     <script type="text/javascript">
       var webstore = new Vue({
-        el: '#app'
+        el: '#app',
+        data: {
+            pageTitle: "Buske bofælleskab",
+            pageSubtitle : "Fællesspisning",        
+            dinnerDays: [
+                { 
+                    dayName : "Mandag",
+                    dayDateName : "9. Juni" 
+                },
+                { 
+                    dayName : "Tirsdag",
+                    dayDateName : "10. Juni" 
+                },
+                { 
+                    dayName : "Onsdag",
+                    dayDateName : "11. Juni" 
+                },
+                { 
+                    dayName : "Torsdag",
+                    dayDateName : "12. Juni" 
+                },
+                { 
+                    dayName : "Fredag",
+                    dayDateName : "13. Juni" 
+                }
+            ]
+        }
       });
     </script>
   </body>
