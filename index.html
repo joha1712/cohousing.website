@@ -31,14 +31,31 @@
                     <div class="tile is-child box has-text-centered">
                         <p class="title is-4">{{ dinner.dayName }}</p>
                         <p class="subtitle is-6">{{ dinner.dayDateName }}</p>
-                        <ul class="has-text-left">
-                            <li v-for="person in dinner.persons">                                
-                                <label class="checkbox">
-                                    <input type="checkbox" v-model="person.isAttending">
-                                        {{ person.name }}                                    
-                                </label>
-                            </li>
-                        </ul>
+
+                        <div class="columns is-mobile" v-for="person in dinner.persons" style="margin-bottom:0px;" >
+                            <div class="column is-one-third">
+                                {{ person.name }}
+                            </div>                            
+                            <div class="column is-two-thirds">
+                                
+                                <nav class="level"> <!-- This level is need to keep the radio together in the column (so it doesn´t split line when resizing) -->
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <div class="control">
+                                                <label class="radio">
+                                                    <input type="radio" value="true" :name="dinner.id + '_' + person.name" v-model="person.attending" >
+                                                    Ja
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" value="false" :name="dinner.id + '_' + person.name" v-model="person.attending" >
+                                                    Nej
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nav>                                
+                            </div>
+                        </div>                                     
                     </div>
                 </div>
                
@@ -55,14 +72,16 @@
             pageSubtitle : "Fællesspisning",        
             dinnerDays: [
                 { 
+                    id: 1,
                     dayName : "Mandag",
                     dayDateName : "9. Juni",
                     persons: [
-                        { name: "Jonas", isAttending : true },
-                        { name: "Eva", isAttending : false }
+                        { name: "Jonas", attending : true },
+                        { name: "Eva", attending : false }
                     ]
                 },
-                { 
+                {
+                    id: 2,
                     dayName : "Tirsdag",
                     dayDateName : "10. Juni",
                     persons: [
@@ -71,6 +90,7 @@
                     ]
                 },
                 { 
+                    id: 3,
                     dayName : "Onsdag",
                     dayDateName : "11. Juni",
                     persons: [
@@ -79,6 +99,7 @@
                     ]
                 },
                 { 
+                    id: 4,
                     dayName : "Torsdag",
                     dayDateName : "12. Juni",
                     persons: [
@@ -87,6 +108,7 @@
                     ]
                 },
                 { 
+                    id: 5,
                     dayName : "Fredag",
                     dayDateName : "13. Juni",
                     persons: [
