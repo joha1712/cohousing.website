@@ -13,7 +13,7 @@
   <body>
     <div id="app">      
       <section class="section">
-        <div class="container">
+        <div class="container has-text-centered">
           <h1 class="title">
               {{ pageTitle }}
           </h1>
@@ -27,27 +27,32 @@
          
             <div class="tile is-ancestor">
                 
-                <div class="tile" v-for="dinner in dinnerDays">
-                    <div class="tile is-child box has-text-centered">
-                        <p class="title is-4">{{ dinner.dayName }}</p>
-                        <p class="subtitle is-6">{{ dinner.dayDateName }}</p>
+                <div class="tile" v-for="commonMeal in commonMeals">
+                    <div class="tile is-child box">
+                        <p class="title is-4">{{ commonMeal.dayName }}</p>
+                        <p class="subtitle is-6">{{ commonMeal.dateName }}</p>
 
-                        <div class="columns is-mobile" v-for="person in dinner.persons" style="margin-bottom:0px;" >
-                            <div class="column is-one-third">
-                                {{ person.name }}
+                        <div class="columns is-mobile is-marginless" v-for="(registration, index) in commonMeal.registrations" style="padding:8px;" :style="calcRowStyle(index)"  >
+                            <div class="column is-paddingless is-1" >
+								<span v-show="registration.attending === 'true'" class="icon has-text-success is-small" >
+									  <i class="fas fa-check-square"></i>
+								</span>
+							</div>							
+							
+							<div class="column is-4 is-paddingless">								
+								{{ registration.personName }}							
                             </div>                            
-                            <div class="column is-two-thirds">
-                                
+                            <div class="column is-7 is-paddingless">                                
                                 <nav class="level"> <!-- This level is need to keep the radio together in the column (so it doesn´t split line when resizing) -->
                                     <div class="level-left">
                                         <div class="level-item">
                                             <div class="control">
                                                 <label class="radio">
-                                                    <input type="radio" value="true" :name="dinner.id + '_' + person.name" v-model="person.attending" >
+                                                    <input type="radio" value="true" :name="registration.id" v-model="registration.attending" >
                                                     Ja
                                                 </label>
                                                 <label class="radio">
-                                                    <input type="radio" value="false" :name="dinner.id + '_' + person.name" v-model="person.attending" >
+                                                    <input type="radio" value="false" :name="registration.id" v-model="registration.attending" >
                                                     Nej
                                                 </label>
                                             </div>
@@ -67,53 +72,289 @@
     <script type="text/javascript">
       var webstore = new Vue({
         el: '#app',
+        methods: {
+            calcRowStyle(idx) {
+                return (idx % 2 == 0) ? { } : { background: '#1c2020'}
+            }
+        },
         data: {
             pageTitle: "Buske bofælleskab",
             pageSubtitle : "Fællesspisning",        
-            dinnerDays: [
-                { 
-                    id: 1,
-                    dayName : "Mandag",
-                    dayDateName : "9. Juni",
-                    persons: [
-                        { name: "Jonas", attending : true },
-                        { name: "Eva", attending : false }
+            commonMeals: [
+                {
+                    id: "1",
+                    date: "2018-08-14T13:04:42.745Z",
+                    dayName: "Tirsdag",
+                    dateName: "14. august",
+                    registrations: [
+                        {
+                            id: "1",
+                            personId: "1",
+                            personName: "Jonas ",
+                            attending: false
+                        },
+                        {
+                            id: "2",
+                            personId: "2",
+                            personName: "Eva ",
+                            attending: false
+                        },
+                        {
+                            id: "3",
+                            personId: "3",
+                            personName: "Dorte ",
+                            attending: false
+                        },
+                        {
+                            id: "4",
+                            personId: "4",
+                            personName: "Stefan ",
+                            attending: false
+                        },
+                        {
+                            id: "5",
+                            personId: "5",
+                            personName: "Thomas ",
+                            attending: false
+                        },
+                        {
+                            id: "6",
+                            personId: "6",
+                            personName: "Jane ",
+                            attending: false
+                        },
+                        {
+                            id: "7",
+                            personId: "7",
+                            personName: "Theo ",
+                            attending: false
+                        },
+                        {
+                            id: "8",
+                            personId: "8",
+                            personName: "Susanne ",
+                            attending: false
+                        },
+                        {
+                            id: "9",
+                            personId: "9",
+                            personName: "Henrik ",
+                            attending: false
+                        },
+                        {
+                            id: "10",
+                            personId: "10",
+                            personName: "Christian ",
+                            attending: false
+                        },
+                        {
+                            id: "11",
+                            personId: "11",
+                            personName: "André ",
+                            attending: false
+                        },
+                        {
+                            id: "12",
+                            personId: "12",
+                            personName: "Pernille ",
+                            attending: false
+                        },
+                        {
+                            id: "13",
+                            personId: "13",
+                            personName: "Anne Marie ",
+                            attending: false
+                        },
+                        {
+                            id: "14",
+                            personId: "14",
+                            personName: "Nikolaj ",
+                            attending: false
+                        }
                     ]
                 },
                 {
-                    id: 2,
-                    dayName : "Tirsdag",
-                    dayDateName : "10. Juni",
-                    persons: [
-                        { name: "Jonas" },
-                        { name: "Eva" }
+                    id: "2",
+                    date: "2018-08-15T13:04:42.745Z",
+                    dayName: "Onsdag",
+                    dateName: "15. august",
+                    registrations: [
+                        {
+                            id: "20",
+                            personId: "1",
+                            personName: "Jonas ",
+                            attending: false
+                        },
+                        {
+                            id: "-21",
+                            personId: "2",
+                            personName: "Eva ",
+                            attending: false
+                        },
+                        {
+                            id: "22",
+                            personId: "3",
+                            personName: "Dorte ",
+                            attending: false
+                        },
+                        {
+                            id: "23",
+                            personId: "4",
+                            personName: "Stefan ",
+                            attending: false
+                        },
+                        {
+                            id: "24",
+                            personId: "5",
+                            personName: "Thomas ",
+                            attending: false
+                        },
+                        {
+                            id: "25",
+                            personId: "6",
+                            personName: "Jane ",
+                            attending: false
+                        },
+                        {
+                            id: "26",
+                            personId: "7",
+                            personName: "Theo ",
+                            attending: false
+                        },
+                        {
+                            id: "27",
+                            personId: "8",
+                            personName: "Susanne ",
+                            attending: false
+                        },
+                        {
+                            id: "28",
+                            personId: "9",
+                            personName: "Henrik ",
+                            attending: false
+                        },
+                        {
+                            id: "29",
+                            personId: "10",
+                            personName: "Christian ",
+                            attending: false
+                        },
+                        {
+                            id: "30",
+                            personId: "11",
+                            personName: "André ",
+                            attending: false
+                        },
+                        {
+                            id: "31",
+                            personId: "12",
+                            personName: "Pernille ",
+                            attending: false
+                        },
+                        {
+                            id: "32",
+                            personId: "13",
+                            personName: "Anne Marie ",
+                            attending: false
+                        },
+                        {
+                            id: "33",
+                            personId: "14",
+                            personName: "Nikolaj ",
+                            attending: false
+                        }
                     ]
                 },
-                { 
-                    id: 3,
-                    dayName : "Onsdag",
-                    dayDateName : "11. Juni",
-                    persons: [
-                        { name: "Jonas" },
-                        { name: "Eva" }
-                    ]
-                },
-                { 
-                    id: 4,
-                    dayName : "Torsdag",
-                    dayDateName : "12. Juni",
-                    persons: [
-                        { name: "Jonas" },
-                        { name: "Eva" }
-                    ]
-                },
-                { 
-                    id: 5,
-                    dayName : "Fredag",
-                    dayDateName : "13. Juni",
-                    persons: [
-                        { name: "Jonas" },
-                        { name: "Eva" }
+				{
+                    id: "3",
+                    date: "2018-08-16T13:04:42.745Z",
+                    dayName: "Torsdag",
+                    dateName: "16. august",
+                    registrations: [
+                        {
+                            id: "40",
+                            personId: "1",
+                            personName: "Jonas ",
+                            attending: false
+                        },
+                        {
+                            id: "41",
+                            personId: "2",
+                            personName: "Eva ",
+                            attending: false
+                        },
+                        {
+                            id: "42",
+                            personId: "3",
+                            personName: "Dorte ",
+                            attending: false
+                        },
+                        {
+                            id: "43",
+                            personId: "4",
+                            personName: "Stefan ",
+                            attending: false
+                        },
+                        {
+                            id: "44",
+                            personId: "5",
+                            personName: "Thomas ",
+                            attending: false
+                        },
+                        {
+                            id: "45",
+                            personId: "6",
+                            personName: "Jane ",
+                            attending: false
+                        },
+                        {
+                            id: "46",
+                            personId: "7",
+                            personName: "Theo ",
+                            attending: false
+                        },
+                        {
+                            id: "47",
+                            personId: "8",
+                            personName: "Susanne ",
+                            attending: false
+                        },
+                        {
+                            id: "48",
+                            personId: "9",
+                            personName: "Henrik ",
+                            attending: false
+                        },
+                        {
+                            id: "49",
+                            personId: "10",
+                            personName: "Christian ",
+                            attending: false
+                        },
+                        {
+                            id: "50",
+                            personId: "11",
+                            personName: "André ",
+                            attending: false
+                        },
+                        {
+                            id: "51",
+                            personId: "12",
+                            personName: "Pernille ",
+                            attending: false
+                        },
+                        {
+                            id: "52",
+                            personId: "13",
+                            personName: "Anne Marie ",
+                            attending: false
+                        },
+                        {
+                            id: "53",
+                            personId: "14",
+                            personName: "Nikolaj ",
+                            attending: false
+                        }
                     ]
                 }
             ]
