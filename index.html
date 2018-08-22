@@ -26,44 +26,48 @@
         </div>
         </section>
 
-        <section class="section">
-         
-            <div class="tile is-ancestor">
-                
-                <div class="tile" v-for="commonMeal in commonMeals">
-                    <div class="tile is-child box">
-                        <p class="title is-4">{{ commonMeal.dayName }}</p>
-                        <p class="subtitle is-6">{{ commonMeal.dateName }}</p>
+        <section class="section">     
 
-                        <div class="columns is-mobile is-marginless" v-for="(registration, index) in commonMeal.registrations" style="padding:8px;" :style="calcRowStyle(index)"  >
-                            <div class="column is-paddingless is-1" >
-								<span v-show="registration.attending === 'true'" class="icon has-text-success is-small" >
-									  <i class="fas fa-check-square"></i>
-								</span>
-							</div>							
-							
-							<div class="column is-4 is-paddingless">								
-								{{ registration.personName }}							
-                            </div>                            
-                            <div class="column is-7 is-paddingless">                                
-                                <nav class="level"> <!-- This level is need to keep the radio together in the column (so it doesn´t split line when resizing) -->
-                                    <div class="level-left">
-                                        <div class="level-item">
-                                            <div class="control">
-                                                <label class="radio">
-                                                    <input type="radio" value="true" :name="registration.id" v-model="registration.attending" >
-                                                    Ja
-                                                </label>
-                                                <label class="radio">
-                                                    <input type="radio" value="false" :name="registration.id" v-model="registration.attending" >
-                                                    Nej
-                                                </label>
+            <div class="tile is-ancestor">                
+                <div class="meal-tile tile" v-for="commonMeal in commonMeals">
+                    <div class="tile is-child box">
+                        <div class="box has-text-centered meal-header-box">
+                            <p class="title is-4 ">{{ commonMeal.dayName }}</p>
+                            <p class="subtitle is-6">{{ commonMeal.dateName }}</p>
+                        </div>
+
+                        <div class="meal-reservation-group" v-for="group in commonMeal.registrationGroups">
+                            
+                            <div class="meal-reservation-row columns is-mobile is-marginless" v-for="(registration, index) in group.registrations" :class="calcMealRowClass(registration.regNo)">
+                                <div class="column is-paddingless is-1" >
+                                    <span v-show="registration.attending === 'true'" class="icon has-text-success is-small">
+                                          <i class="fas fa-check-square"></i>
+                                    </span>
+                                </div>							
+                                
+                                <div class="column is-4 is-paddingless">								
+                                    {{ registration.personName }}							
+                                </div>                            
+                                <div class="column is-7 is-paddingless">                                
+                                    <nav class="level"> <!-- This level is need to keep the radio together in the column (so it doesn´t split line when resizing) -->
+                                        <div class="level-left">
+                                            <div class="level-item">
+                                                <div class="control">
+                                                    <label class="radio">
+                                                        <input type="radio" value="true" :name="registration.id" v-model="registration.attending" >
+                                                        Ja
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" value="false" :name="registration.id" v-model="registration.attending" >
+                                                        Nej
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </nav>                                
+                                    </nav>                                
+                                </div>
                             </div>
-                        </div>                                     
+                        </div>                                                   
                     </div>
                 </div>
                
@@ -76,8 +80,8 @@
       var webstore = new Vue({
         el: '#app',
         methods: {
-            calcRowStyle(idx) {
-                return (idx % 2 == 0) ? { } : { background: "#1c2020"}
+            calcMealRowClass(regNo) {
+                return (regNo % 2 == 0) ? "meal-reservation-row-even" : "meal-reservation-row-odd";                
             }
         },
         created() {
@@ -91,7 +95,7 @@
                     this.errors.push(e)
                 })
         },
-        data: {
+        data: {            
             pageTitle: "Buske bofælleskab",
             pageSubtitle : "Fællesspisning",        
             commonMeals: [                
