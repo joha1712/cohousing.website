@@ -40,7 +40,7 @@
                             
                             <div class="meal-reservation-row columns is-mobile is-marginless" v-for="(registration, index) in group.registrations" :class="calcMealRowClass(registration.regNo)">
                                 <div class="column is-paddingless is-1" >
-                                    <span v-show="registration.attending === 'true'" class="icon has-text-success is-small">
+                                    <span v-show="registration.attending" class="icon has-text-success is-small">
                                           <i class="fas fa-check-square"></i>
                                     </span>
                                 </div>							
@@ -48,17 +48,19 @@
                                 <div class="column is-4 is-paddingless">								
                                     {{ registration.personName }}							
                                 </div>                            
+                                
                                 <div class="column is-7 is-paddingless">                                
-                                    <nav class="level"> <!-- This level is need to keep the radio together in the column (so it doesn´t split line when resizing) -->
+                                    <!-- This level is need to keep the radio together in the column (so it doesn´t split line when resizing) -->
+                                    <nav class="level">                                         
                                         <div class="level-left">
                                             <div class="level-item">
                                                 <div class="control">
                                                     <label class="radio">
-                                                        <input type="radio" value="true" :name="registration.id" v-model="registration.attending" >
+                                                        <input type="radio" :value="true" :name="registration.id" v-model="registration.attending" @change="save(registration)" >
                                                         Ja
                                                     </label>
                                                     <label class="radio">
-                                                        <input type="radio" value="false" :name="registration.id" v-model="registration.attending" >
+                                                        <input type="radio" :value="false" :name="registration.id" v-model="registration.attending" @change="save(registration)">
                                                         Nej
                                                     </label>
                                                 </div>
