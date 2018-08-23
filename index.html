@@ -84,17 +84,25 @@
         methods: {
             calcMealRowClass(regNo) {
                 return (regNo % 2 == 0) ? "meal-reservation-row-even" : "meal-reservation-row-odd";                
+            },
+            save(registration) {                
+                axios
+                    .put("https://localhost:44302/api/commonmeal/registrations", registration)                    
+                    .catch(e => {
+                        alert("Error saving registration: " + e)
+                        console.log(e);
+                    })
             }
         },
         created() {
             axios
-                .get("https://localhost:44302/api/commonmeal/list")
-                .then(response => {
-                    // JSON responses are automatically parsed.
+                .get("https://localhost:44302/api/commonmeal/commonmeals")
+                .then(response => {                    
                     this.commonMeals = response.data
                 })
                 .catch(e => {
-                    this.errors.push(e)
+                    alert("Error fetch data: " + e)
+                        console.log(e);
                 })
         },
         data: {            
