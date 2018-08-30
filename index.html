@@ -30,10 +30,27 @@
 
             <div class="tile is-ancestor">                
                 <div class="meal-tile tile" v-for="commonMeal in commonMeals">
-                    <div class="tile is-child box">
-                        <div class="box has-text-centered meal-header-box">
+                    <div class="tile is-child box" >
+                        <div class="box has-text-centered meal-header-box" :class="calcMealTitleClass(commonMeal.chefs)">
                             <p class="title is-4 ">{{ commonMeal.dayName }}</p>
                             <p class="subtitle is-6">{{ commonMeal.dateName }}</p>
+                        </div>
+
+                        <div class="box meal-header-box">                                                            
+                                
+                            <div class="field" v-for="(chef, idx) in commonMeal.chefs">
+                                <p class="control is-expanded has-icons-left">
+                                    <span class="select is-fullwidth">
+                                        <select v-model="chef.personId" :class="calcChefClass(chef)" @change="saveChef(chef)">
+                                            <option :value="null">Vælg {{ idx + 1 }}. kok ...</option>
+                                            <option :value="person.id" v-for="person in persons">{{ person.name }}</option>                                            
+                                        </select>
+                                    </span>
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-utensils"></i>
+                                    </span>                                    
+                                </p>
+                            </div>                                                                                    
                         </div>
 
                         <div class="meal-reservation-group" v-for="group in commonMeal.registrationGroups">
@@ -56,11 +73,11 @@
                                             <div class="level-item">
                                                 <div class="control">
                                                     <label class="radio">
-                                                        <input type="radio" :value="true" :name="registration.id" v-model="registration.attending" @change="save(registration)" >
+                                                        <input type="radio" :value="true" :name="registration.id" v-model="registration.attending" @change="saveRegistration(registration)" >
                                                         Ja
                                                     </label>
                                                     <label class="radio">
-                                                        <input type="radio" :value="false" :name="registration.id" v-model="registration.attending" @change="save(registration)">
+                                                        <input type="radio" :value="false" :name="registration.id" v-model="registration.attending" @change="saveRegistration(registration)">
                                                         Nej
                                                     </label>
                                                 </div>
@@ -85,20 +102,43 @@
             calcMealRowClass(regNo) {
                 return (regNo % 2 == 0) ? "meal-reservation-row-even" : "meal-reservation-row-odd";                
             },
-            save(registration) {                
+            calcMealTitleClass(chefs) {
+                return chefs.every(x => x.personId != null) 
+                    ? "meal-chefs-ok" 
+                    : chefs.some(x => x.personId != null) ? "meal-chefs-missingsome" : "";
+            },
+            calcChefClass(chef) {
+                return chef.personId != null ? "meal-chef-ok" : "";
+            },
+            saveRegistration(registration) {                
                 axios
-                    .put("https://localhost:44302/api/commonmeal/registrations", registration)                    
+                    .put("https://localhost:44302/api/commonmeal/registrations", registration)
+                    .then(response => {
+                        console.log("Saved registration: " + registration.id);
+                    })                
                     .catch(e => {
                         alert("Error saving registration: " + e)
                         console.log(e);
                     })
+            },
+            saveChef(chef) {
+                axios
+                    .put("https://localhost:44302/api/commonmeal/chefs", chef)
+                    .then(response => {
+                        console.log("Saved chef: " + chef.id + " personId: " + chef.personId);
+                    })                   
+                    .catch(e => {
+                        alert("Error saving chef: " + e)
+                        console.log(e);
+                    })                    
             }
         },
         created() {
             axios
                 .get("https://localhost:44302/api/commonmeal/commonmeals")
                 .then(response => {                    
-                    this.commonMeals = response.data
+                    this.commonMeals = response.data.meals;
+                    this.persons = response.data.persons;
                 })
                 .catch(e => {
                     alert("Error fetch data: " + e)
@@ -108,9 +148,9 @@
         data: {            
             pageTitle: "Buske bofælleskab",
             pageSubtitle : "Fællesspisning",        
-            commonMeals: [                
-            ]
-        }
+            commonMeals: [],
+            persons: []
+        }        
       });
     </script>
   </body>
