@@ -35,6 +35,16 @@ select select.is-hovered, .select select:hover {
     color: rgba(255, 255, 255, .3);
 }
 
+.pagination-link, .pagination-next, .pagination-previous {
+    border-color: #5e6d6f;
+    color: #ffffff;
+    min-width: 2.25em;
+}
+.pagination-link:hover, .pagination-next:hover, .pagination-previous:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
 .tile {
     margin: 0.1rem;
     border-radius: 14px;
@@ -47,16 +57,61 @@ select select.is-hovered, .select select:hover {
     padding-right:0.5rem;
 }
 
+.input, .textarea {
+    background-color: #343c3d;
+    color: white;
+    border-color: #8c9b9d;
+}
+
+.input:hover {
+    border-color: white;    
+}
+
+.input:-moz-placeholder, .input::-moz-placeholder, .select select::-moz-placeholder, .textarea:-moz-placeholder, .textarea::-moz-placeholder {
+    color: white;
+}
+
+.input::-webkit-input-placeholder, .select select::-webkit-input-placeholder, .textarea::-webkit-input-placeholder {
+    color: white;
+}
+
+.input:-ms-input-placeholder, .textarea:-ms-input-placeholder {
+    color: white;
+}
+
 .section {
     padding: 1.5rem 1.5rem;
 }
 
-.meal-header-box {
-    border: 1px solid black;        
+.subtitle {
+    color: #ffffff;
 }
 
-select.meal-chef-ok {
-    border-color: /*rgba(0, 180, 0, 1);*/ #1abc9c90;
+/*.box {
+    margin: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}*/
+
+.meal-chef-box {
+    border: 1px solid black;   
+    border-radius: 8px;
+    border: 1px solid black;
+    overflow: hidden;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem !important;
+    padding-left: 0rem !important;
+    padding-right: 0rem !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.meal-chef-row {
+    padding: 6px;
+}
+
+.meal-chef-ok {
+    color: #1abc9c80 !important;
 }
 
 .meal-chefs-ok {
@@ -72,7 +127,13 @@ select.meal-chef-ok {
     border: 1px solid black;
     overflow: hidden;
     margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem ;
+    padding-left: 0rem !important;
+    padding-right: 0rem !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 .meal-reservation-row {    
@@ -80,8 +141,7 @@ select.meal-chef-ok {
 }
 
 .meal-reservation-row-even {
-    background: black;
-        
+    background: black;        
 }
 
 .meal-reservation-row-odd {

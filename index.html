@@ -15,16 +15,22 @@
   
   <body>
     <div id="app">      
-      <section class="section">
-        <div class="container has-text-centered">
-          <h1 class="title">
-              {{ pageTitle }}
-          </h1>
-          <p class="subtitle">
-              {{ pageSubtitle }}
-          </p>
-        </div>
-        </section>
+        <section class="section">
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    {{ pageTitle }}
+                </h1>
+                <p class="subtitle">
+                    {{ pageSubtitle }}
+                </p>          
+            </div>
+
+            <nav class="pagination" role="navigation" aria-label="pagination">
+                <a class="pagination-previous" @click="previous()">Tidligere</a>
+                <a class="pagination-next" @click="next()">Senere</a>
+            </nav>
+
+        </section>       
 
         <section class="section">     
 
@@ -32,33 +38,69 @@
                 <div class="meal-tile tile" v-for="commonMeal in commonMeals">
                     <div class="tile is-child box" >
                         <div class="box has-text-centered meal-header-box" :class="calcMealTitleClass(commonMeal.chefs)">
-                            <p class="title is-4 ">{{ commonMeal.dayName }}</p>
-                            <p class="subtitle is-6">{{ commonMeal.dateName }}</p>
+                            <p class="title is-4">{{ commonMeal.dayName }}</p>
+                            <p class="subtitle is-6">{{ commonMeal.dateName }}</p>                            
                         </div>
 
-                        <div class="box meal-header-box">                                                            
+                        <div class="box meal-chef-box">                                                            
                                 
-                            <div class="field" v-for="(chef, idx) in commonMeal.chefs">
-                                <p class="control is-expanded has-icons-left">
-                                    <span class="select is-fullwidth">
-                                        <select v-model="chef.personId" :class="calcChefClass(chef)" @change="saveChef(chef)">
-                                            <option :value="null">Vælg {{ idx + 1 }}. kok ...</option>
-                                            <option :value="person.id" v-for="person in persons">{{ person.name }}</option>                                            
-                                        </select>
+                            <div class="meal-chef-row columns is-mobile is-marginless" v-for="(chef, idx) in commonMeal.chefs">                                
+                                
+                                <div class="column is-paddingless is-1" >
+                                    <span v-show="chef.personId != null" class="icon is-small" style="vertical-align:bottom;">
+                                          <i class="fas fa-check-circle"></i>
                                     </span>
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-utensils"></i>
-                                    </span>                                    
-                                </p>
-                            </div>                                                                                    
+                                </div>
+                            
+                                <div class="column is-paddingless is-10" >
+                                    <div class="field">
+                                        <p class="control is-expanded has-icons-left">
+                                            <span class="select is-fullwidth">
+                                                <select v-model="chef.personId" @change="saveChef(chef)">
+                                                    <option :value="null">Vælg {{ idx + 1 }}. kok ...</option>
+                                                    <option :value="person.id" v-for="person in persons">{{ person.name }}</option>                                            
+                                                </select>
+                                            </span>
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-user"></i>
+                                            </span>                                    
+                                        </p>
+                                    </div>                                  
+                                </div>
+
+                                <div class="column is-paddingless is-1">                                
+                                </div>
+                            </div>   
+                            
+                            <div class="meal-chef-row columns is-mobile is-marginless">                                
+                                
+                                <div class="column is-paddingless is-1" >                                    
+                                </div>
+                            
+                                <div class="column is-paddingless is-10" >
+                                    <div class="field">
+                                        <div class="control">
+                                            <p class="control has-icons-left">
+                                                <input class="input" type="text" placeholder="Angiv menu">
+                                                <span class="icon is-small is-left">
+                                                    <i class="fas fa-utensils"></i>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column is-paddingless is-1">                                
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="meal-reservation-group" v-for="group in commonMeal.registrationGroups">
+                        <div class="box meal-reservation-group" v-for="group in commonMeal.registrationGroups">
                             
                             <div class="meal-reservation-row columns is-mobile is-marginless" v-for="(registration, index) in group.registrations" :class="calcMealRowClass(registration.regNo)">
                                 <div class="column is-paddingless is-1" >
-                                    <span v-show="registration.attending" class="icon has-text-success is-small">
-                                          <i class="fas fa-check-square"></i>
+                                    <span v-show="registration.attending" class="icon is-small" style="vertical-align:text-bottom;">
+                                          <i class="fas fa-check-circle"></i>
                                     </span>
                                 </div>							
                                 
@@ -99,6 +141,38 @@
       var webstore = new Vue({
         el: '#app',
         methods: {
+            previous() {
+                var date = this.commonMeals[0].date;
+                axios
+                    .get("https://localhost:44302/api/commonmeal/commonmeals/previous", 
+                        {
+                            params: { mealDate : date }
+                        }
+                    )
+                    .then(response => {                    
+                        this.commonMeals = response.data.meals;                        
+                    })
+                    .catch(e => {
+                        alert("Error fetch previous meals: " + e)
+                            console.log(e);
+                    })
+            },
+            next() {
+                var date = this.commonMeals[0].date;
+                axios
+                    .get("https://localhost:44302/api/commonmeal/commonmeals/next", 
+                        {
+                                params : { mealDate : date }
+                        }
+                    )
+                    .then(response => {                    
+                        this.commonMeals = response.data.meals;                        
+                    })
+                    .catch(e => {
+                        alert("Error fetch next meals: " + e)
+                            console.log(e);
+                    })
+            },
             calcMealRowClass(regNo) {
                 return (regNo % 2 == 0) ? "meal-reservation-row-even" : "meal-reservation-row-odd";                
             },
@@ -108,7 +182,8 @@
                     : chefs.some(x => x.personId != null) ? "meal-chefs-missingsome" : "";
             },
             calcChefClass(chef) {
-                return chef.personId != null ? "meal-chef-ok" : "";
+                console.log("A: " + chef.personId);
+                return chef.personId != null ? ["meal-chef-ok", "fa-check"] : "fa-user";
             },
             saveRegistration(registration) {                
                 axios
@@ -131,7 +206,7 @@
                         alert("Error saving chef: " + e)
                         console.log(e);
                     })                    
-            }
+            },            
         },
         created() {
             axios
@@ -144,13 +219,15 @@
                     alert("Error fetch data: " + e)
                         console.log(e);
                 })
-        },
+        }
+        
+        ,
         data: {            
             pageTitle: "Buske bofælleskab",
             pageSubtitle : "Fællesspisning",        
             commonMeals: [],
             persons: []
-        }        
+        } 
       });
     </script>
   </body>
