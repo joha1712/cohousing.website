@@ -1,3 +1,6 @@
+/**********************************************************************/
+/* select styles */
+
 .select select {
     background-color: #343c3d;
     color: white;
@@ -5,11 +8,6 @@
     font-weight: 400;
     font-size: 15px;    
     border-color: #8C9B9D;
-}
-
-.label { 
-    font-weight: 400;
-    color: white;
 }
 
 .select:not(.is-multiple):not(.is-loading)::after {
@@ -21,43 +19,64 @@ select select.is-hovered, .select select:hover {
 }
 
 .select select.is-active, .select select.is-focused, .select select:active, .select select:focus {
+    border-color: #ffffff;    
+}
+
+.select select[disabled]:-moz-placeholder, .select select[disabled]::-moz-placeholder {
+    color: rgba(255, 255, 255, .3);
+}
+
+.select select[disabled]::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, .3);
+}
+
+.select select[disabled]:-ms-input-placeholder {
+    color: rgba(255, 255, 255, .3);
+}
+
+.select select::-moz-placeholder {
+    color: white;
+}
+
+.select select::-webkit-input-placeholder {
+    color: white;
+}
+
+/**********************************************************************/
+/* button styles */
+
+.button {
+    background-color: #343c3d;
+    color: white;
+    border-color: #8c9b9d;
+}
+
+.button:not(.is-multiple):not(.is-loading)::after {
+    border-color: #8c9b9d;
+}
+
+button button.is-hovered, .button button:hover {
     border-color: #ffffff;
-    box-shadow: 0 0 0 .125em rgba(26, 188, 156, .25);
 }
 
-.input[disabled]:-moz-placeholder, .input[disabled]::-moz-placeholder, .select select[disabled]:-moz-placeholder, .select select[disabled]::-moz-placeholder, .textarea[disabled]:-moz-placeholder, .textarea[disabled]::-moz-placeholder {
-    color: rgba(255, 255, 255, .3);
-}
-.input[disabled]::-webkit-input-placeholder, .select select[disabled]::-webkit-input-placeholder, .textarea[disabled]::-webkit-input-placeholder {
-    color: rgba(255, 255, 255, .3);
-}
-.input[disabled]:-ms-input-placeholder, .select select[disabled]:-ms-input-placeholder, .textarea[disabled]:-ms-input-placeholder {
-    color: rgba(255, 255, 255, .3);
-}
-
-.pagination-link, .pagination-next, .pagination-previous {
-    border-color: #5e6d6f;
-    color: #ffffff;
-    min-width: 2.25em;
-}
-.pagination-link:hover, .pagination-next:hover, .pagination-previous:hover {
+.button.is-focused, .button:focus {
     border-color: #ffffff;
-    color: #ffffff;
+    color: white;
 }
 
-.tile {
-    margin: 0.1rem;
-    border-radius: 14px;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+.field.has-addons .control:first-child .button {
+    border-top-left-radius:0.4rem;
+    border-bottom-left-radius:0.4rem
 }
 
-.radio {
-    padding-left:0.5rem;
-    padding-right:0.5rem;
+.button:hover {
+    border-color: white;    
 }
 
-.input, .textarea {
+/**********************************************************************/
+/* input styles */
+
+.input {
     background-color: #343c3d;
     color: white;
     border-color: #8c9b9d;
@@ -67,16 +86,93 @@ select select.is-hovered, .select select:hover {
     border-color: white;    
 }
 
-.input:-moz-placeholder, .input::-moz-placeholder, .select select::-moz-placeholder, .textarea:-moz-placeholder, .textarea::-moz-placeholder {
+.input[disabled]:-moz-placeholder, .input[disabled]::-moz-placeholder {
+    color: rgba(255, 255, 255, .3);
+}
+
+.input[disabled]::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, .3);
+}
+
+.input[disabled]:-ms-input-placeholder {
+    color: rgba(255, 255, 255, .3);
+}
+
+.field.has-addons .control:last-child .input {
+    border-top-left-radius:0.4rem;
+    border-bottom-left-radius:0.4rem
+}
+
+.input:-moz-placeholder, .input::-moz-placeholder {
     color: white;
 }
 
-.input::-webkit-input-placeholder, .select select::-webkit-input-placeholder, .textarea::-webkit-input-placeholder {
+.input::-webkit-input-placeholder {
     color: white;
 }
 
-.input:-ms-input-placeholder, .textarea:-ms-input-placeholder {
+.input:-ms-input-placeholder {
     color: white;
+}
+
+/**********************************************************************/
+/* textarea */
+
+.textarea {
+    background-color: #343c3d;
+    color: white;
+    border-color: #8c9b9d;
+}
+
+.textarea:-moz-placeholder, .textarea::-moz-placeholder {
+    color: white;
+}
+
+.textarea::-webkit-input-placeholder {
+    color: white;
+}
+
+.textarea:-ms-input-placeholder {
+    color: white;
+}
+
+.textarea[disabled]:-moz-placeholder, .textarea[disabled]::-moz-placeholder {
+    color: rgba(255, 255, 255, .3);
+}
+
+.textarea[disabled]::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, .3);
+}
+
+.textarea[disabled]:-ms-input-placeholder {
+    color: rgba(255, 255, 255, .3);
+}
+
+
+/**********************************************************************/
+/* label styles */
+
+.label { 
+    font-weight: 400;
+    color: white;
+}
+
+/**********************************************************************/
+/* radio styles */
+
+.radio {
+    padding-left:0.5rem;
+    padding-right:0.5rem;
+}
+
+/*********************************************************************/
+/* Bulma various styles */
+
+.tile {
+    margin: 0.1rem;
+    border-radius: 14px;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .section {
@@ -87,11 +183,20 @@ select select.is-hovered, .select select:hover {
     color: #ffffff;
 }
 
-/*.box {
-    margin: 0.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-}*/
+.pagination-link, .pagination-next, .pagination-previous {
+    border-color: #5e6d6f;
+    color: #ffffff;
+    min-width: 2.25em;
+}
+
+.pagination-link:hover, .pagination-next:hover, .pagination-previous:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+
+/***********************************************************************/
+/* Common meal styles */
 
 .meal-chef-box {
     border: 1px solid black;   

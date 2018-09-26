@@ -14,7 +14,8 @@
   </head>
   
   <body>
-    <div id="app">      
+    <div id="app"> 
+        
         <section class="section">
             <div class="container has-text-centered">
                 <h1 class="title">
@@ -68,7 +69,7 @@
                                     </div>                                  
                                 </div>
 
-                                <div class="column is-paddingless is-1">                                
+                                <div class="column is-paddingless is-1">                                                                       
                                 </div>
                             </div>   
                             
@@ -78,19 +79,26 @@
                                 </div>
                             
                                 <div class="column is-paddingless is-10" >
-                                    <div class="field">
-                                        <div class="control">
-                                            <p class="control has-icons-left">
+                                    <div class="field has-addons">
+                                        <div class="control is-expanded">
+                                            <p class="control has-icons-left is-fullwidth">
                                                 <input class="input" type="text" placeholder="Angiv menu">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-utensils"></i>
                                                 </span>
                                             </p>
                                         </div>
+                                        <div class="control">
+                                            <button type="submit" class="button">
+                                                <span class="icon is-small is-left">
+                                                    <i class="fas fa-th"></i>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="column is-paddingless is-1">                                
+                                <div class="column is-paddingless is-1">                                                                      
                                 </div>
                             </div>
                         </div>
@@ -130,13 +138,12 @@
                             </div>
                         </div>                                                   
                     </div>
-                </div>
-               
+                </div>               
             </div>
         </div> 
       </section>
-
     </div>
+
     <script type="text/javascript">
       var webstore = new Vue({
         el: '#app',
