@@ -1,0 +1,31 @@
+{
+  "name": "mya.cohousing.website",
+  "version": "0.1.0",
+  "description": "Website for cohousing",
+  "main": "index.js",
+  "devDependencies": {
+    "copyfiles": "~2.1.1",
+    "rimraf": "~3.0.0"
+  },
+  "scripts": {
+    "test": "",
+    "clean": "rimraf dist",
+    "build": "npm run clean && npm run package",
+    "package": "copyfiles */**/* */* * dist && rimraf dist/node_modules dist/package*.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joha1712/cohousing.website.git"
+  },
+  "keywords": [
+    "gymnastics",
+    "video",
+    "recorder"
+  ],
+  "author": "Jonas Thyregod",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/joha1712/cohousing.website/issues"
+  },
+  "homepage": "https://github.com/joha1712/cohousing.website#readme"
+}
