@@ -1,0 +1,25 @@
+language: node_js
+node_js:
+  - 10.16.3
+env:
+  global:
+    - TRAVIS_PACKAGE_VERSION="0.1.$TRAVIS_BUILD_NUMBER"
+    - TRAVIS_PACKAGE_FILE="$TRAVIS_BUILD_DIR/package_v$TRAVIS_PACKAGE_VERSION.zip"
+    - SURGE_LOGIN=$SURGE_RELEASELOGIN
+    - SURGE_TOKEN=$SURGE_RELEASETOKEN
+before_deploy:    
+  - npm run build
+  - cd dist && zip -rv9 $TRAVIS_PACKAGE_FILE . && cd ..
+deploy:
+  - provider: surge
+    project: ./dist/
+    domain: https://buske-dev.surge.sh
+    skip_cleanup: true
+  - provider: releases
+    api_key: $GITHUBPAGES_RELEASETOKEN
+    file: "$TRAVIS_PACKAGE_FILE"
+    skip_cleanup: true
+    name: "v$TRAVIS_PACKAGE_VERSION"
+    draft: true
+after_deploy:
+  - rm $TRAVIS_PACKAGE_FILE
