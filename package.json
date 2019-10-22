@@ -12,7 +12,7 @@
     "test": "",
     "clean": "rimraf dist",
     "build": "npm run clean && npm run package",
-    "package": "mkdirp dist && ncp index.html dist/index.html && ncp README.MD dist/README.md && ncp LICENSE dist/LICENSE && ncp scripts dist/scripts && ncp styles dist/styles && rimraf dist/node_modules dist/package*.json"
+    "package": "mkdirp dist && ncp index.html dist/index.html && ncp README.md dist/README.md && ncp LICENSE dist/LICENSE && ncp scripts dist/scripts && ncp styles dist/styles && rimraf dist/node_modules dist/package*.json"
   },
   "repository": {
     "type": "git",
