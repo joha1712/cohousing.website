@@ -4,11 +4,13 @@
   "description": "Website for cohousing",
   "main": "index.js",
   "devDependencies": {
+    "mkdirp": "0.5.1",
     "ncp": "~2.0.0",
     "rimraf": "~3.0.0",
-    "mkdirp": "0.5.1"
+    "local-web-server": "^3.0.7"
   },
   "scripts": {
+    "start:dev": "ws",
     "test": "",
     "clean": "rimraf dist",
     "build": "npm run clean && npm run package",
