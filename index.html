@@ -157,7 +157,8 @@
                         }
                     )
                     .then(response => {                    
-                        this.commonMeals = response.data.meals;                        
+                        this.commonMeals = response.data.meals;
+                        this.pageSubtitle = response.data.title;                        
                     })
                     .catch(e => {
                         alert("Error fetch previous meals: " + e)
@@ -173,7 +174,8 @@
                         }
                     )
                     .then(response => {                    
-                        this.commonMeals = response.data.meals;                        
+                        this.commonMeals = response.data.meals;
+                        this.pageSubtitle = response.data.title;                      
                     })
                     .catch(e => {
                         alert("Error fetch next meals: " + e)
@@ -221,6 +223,7 @@
                 .then(response => {                    
                     this.commonMeals = response.data.meals;
                     this.persons = response.data.persons;
+                    this.pageSubtitle = response.data.title;
                 })
                 .catch(e => {
                     alert("Error fetch data: " + e)
