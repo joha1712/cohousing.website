@@ -10,7 +10,8 @@
     "local-web-server": "^3.0.7"
   },
   "scripts": {
-    "start:dev": "ws",
+    "start:dev": "ws",    
+    "dev": "ws",
     "test": "",
     "clean": "rimraf dist",
     "build": "npm run clean && npm run package",
