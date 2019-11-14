@@ -9,7 +9,8 @@
     
     <script src="scripts/axios/axios_v0.18.0.js"></script>
     <script defer src="scripts/fontawesome/fontawesome_v5.0.7.min.js"></script>    
-    <script src="scripts/vue/vue_v2.5.16.js"></script>  
+    <script src="scripts/vue/vue_v2.5.16.js"></script> 
+    <script src="config.js"> type="module"</script> 
     
   </head>
   
@@ -151,7 +152,7 @@
             previous() {
                 var date = this.commonMeals[0].date;
                 axios
-                    .get("https://localhost:44302/api/commonmeal/commonmeals/previous", 
+                    .get(`${baseApiUrl}/commonmeal/commonmeals/previous`, 
                         {
                             params: { mealDate : date }
                         }
@@ -168,7 +169,7 @@
             next() {
                 var date = this.commonMeals[0].date;
                 axios
-                    .get("https://localhost:44302/api/commonmeal/commonmeals/next", 
+                    .get(`${baseApiUrl}/commonmeal/commonmeals/next`, 
                         {
                                 params : { mealDate : date }
                         }
@@ -196,7 +197,7 @@
             },
             saveRegistration(registration) {                
                 axios
-                    .put("https://localhost:44302/api/commonmeal/registrations", registration)
+                    .put(`${baseApiUrl}/commonmeal/registrations`, registration)
                     .then(response => {
                         console.log("Saved registration: " + registration.id);
                     })                
@@ -207,7 +208,7 @@
             },
             saveChef(chef) {
                 axios
-                    .put("https://localhost:44302/api/commonmeal/chefs", chef)
+                    .put(`${baseApiUrl}/commonmeal/chefs`, chef)
                     .then(response => {
                         console.log("Saved chef: " + chef.id + " personId: " + chef.personId);
                     })                   
@@ -219,7 +220,7 @@
         },
         created() {
             axios
-                .get("https://localhost:44302/api/commonmeal/commonmeals")
+                .get(`${baseApiUrl}/commonmeal/commonmeals`)
                 .then(response => {                    
                     this.commonMeals = response.data.meals;
                     this.persons = response.data.persons;

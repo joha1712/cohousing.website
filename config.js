@@ -1,0 +1,1 @@
+const baseApiUrl = "https://localhost:44302/api";
