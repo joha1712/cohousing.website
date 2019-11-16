@@ -252,3 +252,13 @@ button button.is-hovered, .button button:hover {
 .meal-reservation-row-odd {
     background: #343c3d;
 }
+
+.mobile-hidden {
+    display: none;
+}
+  
+@media screen and (max-width:768px) {  
+    .is-hidden-mobile-bottommarginfix {
+      margin-bottom: 0rem !important;
+    }
+}

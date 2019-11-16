@@ -19,15 +19,15 @@
         
         <section class="section">
             <div class="container has-text-centered">
-                <h1 class="title">
+                <h1 class="title is-hidden-mobile-bottommarginfix">
                     {{ pageTitle }}
                 </h1>
-                <p class="subtitle">
+                <p class="subtitle is-hidden-mobile">
                     {{ pageSubtitle }}
                 </p>          
             </div>
 
-            <nav class="pagination" role="navigation" aria-label="pagination">
+            <nav class="pagination is-hidden-mobile" role="navigation" aria-label="pagination">
                 <a class="pagination-previous" @click="previous()">Tidligere</a>
                 <a class="pagination-next" @click="next()">Senere</a>
             </nav>
@@ -37,7 +37,7 @@
         <section class="section">     
 
             <div class="tile is-ancestor">                
-                <div class="meal-tile tile" v-for="commonMeal in commonMeals">
+                <div class="meal-tile tile" v-for="(commonMeal, idx2) in commonMeals" :class=" idx2 === 0 ? '' : 'is-hidden-mobile' ">
                     <div class="tile is-child box" >
                         <div class="box has-text-centered meal-header-box" :class="calcMealTitleClass(commonMeal.chefs)">
                             <p class="title is-4">{{ commonMeal.dayName }}</p>
