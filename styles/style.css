@@ -262,3 +262,14 @@ button button.is-hovered, .button button:hover {
       margin-bottom: 0rem !important;
     }
 }
+
+@media screen and (min-width:769px) {
+    .is-visible-mobile-only {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width:769px) {
+    .is-visible-mobile-only {        
+    }
+}

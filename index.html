@@ -28,8 +28,13 @@
             </div>
 
             <nav class="pagination is-hidden-mobile" role="navigation" aria-label="pagination">
-                <a class="pagination-previous" @click="previous()">Tidligere</a>
-                <a class="pagination-next" @click="next()">Senere</a>
+                <a class="pagination-previous" @click="previous()">Forrige uge</a>
+                <a class="pagination-next" @click="next()">Næste uge</a>
+            </nav>
+
+            <nav class="pagination is-visible-mobile-only" role="navigation" aria-label="pagination">
+                <a class="pagination-previous" @click="previous()">Forrige</a>
+                <a class="pagination-next" @click="next()">Næste</a>
             </nav>
 
         </section>       
@@ -83,7 +88,7 @@
                                     <div class="field has-addons">
                                         <div class="control is-expanded">
                                             <p class="control has-icons-left is-fullwidth">
-                                                <input class="input" type="text" placeholder="Angiv menu">
+                                                <input class="input" type="text" placeholder="Noter">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-utensils"></i>
                                                 </span>

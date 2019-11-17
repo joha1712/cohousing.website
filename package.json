@@ -13,7 +13,7 @@
     "shx": "^0.3.2"
   },
   "scripts": {
-    "dev": "npm run build && ws -d dist",        
+    "dev": "npm run build && ws -d dist",
     "build": "npm run clean && npm run package",
     "clean": "shx rm -rf dist",
     "package": "shx mkdir dist && shx cp -R LICENSE index.html config.js scripts styles dist && npm run updateConfig",
