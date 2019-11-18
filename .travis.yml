@@ -1,7 +1,6 @@
 language: node_js
 node_js:
   - 10.16.3
-
 env:
   global:
     - TRAVIS_PACKAGE_VERSION="0.1.$TRAVIS_BUILD_NUMBER"
@@ -15,8 +14,9 @@ notifications:
     on_success: always
     on_failure: always
 
-before_deploy:    
-  - npm run build --baseApiUrl=$BASEAPI_URL
+before_deploy:
+  - npm config set mya.cohousing.website:baseApiUrl $BASEAPI_URL    
+  - npm run build
   - cd dist && zip -rv9 $TRAVIS_PACKAGE_FILE . && cd ..
 deploy:
   - provider: surge
