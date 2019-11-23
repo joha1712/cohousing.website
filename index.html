@@ -28,13 +28,13 @@
             </div>
 
             <nav class="pagination is-hidden-mobile" role="navigation" aria-label="pagination">
-                <a class="pagination-previous" @click="previous()">Forrige uge</a>
-                <a class="pagination-next" @click="next()">Næste uge</a>
+                <a class="pagination-previous" @click="previousweek()">Forrige uge</a>
+                <a class="pagination-next" @click="nextweek()">Næste uge</a>
             </nav>
 
             <nav class="pagination is-visible-mobile-only" role="navigation" aria-label="pagination">
-                <a class="pagination-previous" @click="previous()">Forrige</a>
-                <a class="pagination-next" @click="next()">Næste</a>
+                <a class="pagination-previous" @click="previousday()">Forrige</a>
+                <a class="pagination-next" @click="nextday()">Næste</a>
             </nav>
 
         </section>       
@@ -42,7 +42,7 @@
         <section class="section">     
 
             <div class="tile is-ancestor">                
-                <div class="meal-tile tile" v-for="(commonMeal, idx2) in commonMeals" :class=" idx2 === 0 ? '' : 'is-hidden-mobile' ">
+                <div class="meal-tile tile" v-for="(commonMeal, idx2) in commonMeals" :class="calcMealTileClass(idx2)">
                     <div class="tile is-child box" >
                         <div class="box has-text-centered meal-header-box" :class="calcMealTitleClass(commonMeal.chefs)">
                             <p class="title is-4">{{ commonMeal.dayName }}</p>
@@ -129,11 +129,11 @@
                                             <div class="level-item">
                                                 <div class="control">
                                                     <label class="radio">
-                                                        <input type="radio" :value="true" :name="registration.id" v-model="registration.attending" @change="saveRegistration(registration)" >
+                                                        <input type="radio" :value="true" v-model="registration.attending" @change="saveRegistration(registration)" >
                                                         Ja
                                                     </label>
                                                     <label class="radio">
-                                                        <input type="radio" :value="false" :name="registration.id" v-model="registration.attending" @change="saveRegistration(registration)">
+                                                        <input type="radio" :value="false" v-model="registration.attending" @change="saveRegistration(registration)">
                                                         Nej
                                                     </label>
                                                 </div>
@@ -154,50 +154,66 @@
       var webstore = new Vue({
         el: '#app',
         methods: {
-            previous() {
-                var date = this.commonMeals[0].date;
-                axios
-                    .get(`${baseApiUrl}/commonmeal/commonmeals/previous`, 
-                        {
-                            params: { mealDate : date }
-                        }
-                    )
-                    .then(response => {                    
-                        this.commonMeals = response.data.meals;
-                        this.pageSubtitle = response.data.title;                        
-                    })
-                    .catch(e => {
-                        alert("Error fetch previous meals: " + e)
-                            console.log(e);
-                    })
+            nextday() {                               
+                if (this.focusMealIdx >= this.commonMeals.length -1) {
+                    this.loadMeals("nextweek", () => { this.focusMealIdx = 0; });                    
+                    return;
+                }
+                
+                this.loadMeals("week", () => { this.focusMealIdx++; });       
             },
-            next() {
-                var date = this.commonMeals[0].date;
+            previousday() {                                
+                if (this.focusMealIdx <= 0) {
+                    this.loadMeals("previousweek", () => { this.focusMealIdx = this.commonMeals.length -1; });
+                    return;   
+                }                
+                
+                this.loadMeals("week", () => { this.focusMealIdx--; });                   
+                
+            },
+            previousweek() {
+                this.loadMeals("previousweek");
+            },
+            nextweek() {
+                this.loadMeals("nextweek");
+            },
+            loadMeals(actionName,onSuccess) {
+                onSuccess = onSuccess || (_ => {});
+                
                 axios
-                    .get(`${baseApiUrl}/commonmeal/commonmeals/next`, 
+                    .get(`${baseApiUrl}/commonmeal/commonmeals/${actionName}`, 
                         {
-                                params : { mealDate : date }
+                                params : { weekDate : this.weekDate }
                         }
                     )
-                    .then(response => {                    
+                    .then(response => { 
+                        this.weekDate = response.data.weekDate,               
                         this.commonMeals = response.data.meals;
-                        this.pageSubtitle = response.data.title;                      
+                        this.persons = response.data.persons;
+                        this.pageSubtitle = response.data.title;  
+                        onSuccess();                                            
                     })
                     .catch(e => {
-                        alert("Error fetch next meals: " + e)
+                        alert(`Error fetching meals for ${actionName}: ${e}`)
                             console.log(e);
                     })
+
             },
             calcMealRowClass(regNo) {
                 return (regNo % 2 == 0) ? "meal-reservation-row-even" : "meal-reservation-row-odd";                
+            },
+            calcMealTileClass(mealIdx) {                
+                // Only show the active meal on mobile displays
+                return mealIdx == this.focusMealIdx  
+                    ? ""
+                    : "is-hidden-mobile";                    
             },
             calcMealTitleClass(chefs) {
                 return chefs.every(x => x.personId != null) 
                     ? "meal-chefs-ok" 
                     : chefs.some(x => x.personId != null) ? "meal-chefs-missingsome" : "";
             },
-            calcChefClass(chef) {
-                console.log("A: " + chef.personId);
+            calcChefClass(chef) {                
                 return chef.personId != null ? ["meal-chef-ok", "fa-check"] : "fa-user";
             },
             saveRegistration(registration) {                
@@ -224,23 +240,14 @@
             },            
         },
         created() {
-            axios
-                .get(`${baseApiUrl}/commonmeal/commonmeals`)
-                .then(response => {                    
-                    this.commonMeals = response.data.meals;
-                    this.persons = response.data.persons;
-                    this.pageSubtitle = response.data.title;
-                })
-                .catch(e => {
-                    alert("Error fetch data: " + e)
-                        console.log(e);
-                })
-        }
-        
-        ,
+            this.loadMeals("activeweek", () => { this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal)); });
+            ;               
+        },
         data: {            
+            focusMealIdx: -1,
             pageTitle: "Buske bofælleskab",
-            pageSubtitle : "Fællesspisning",        
+            pageSubtitle : "Fællesspisning",
+            weekDate: null,       
             commonMeals: [],
             persons: []
         } 
