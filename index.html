@@ -88,7 +88,7 @@
                                     <div class="field has-addons">
                                         <div class="control is-expanded">
                                             <p class="control has-icons-left is-fullwidth">
-                                                <input class="input" type="text" placeholder="Noter">
+                                                <input class="input" type="text" placeholder="Noter" v-model="commonMeal.note" @change="saveNote(commonMeal)">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-utensils"></i>
                                                 </span>
@@ -181,7 +181,7 @@
                 onSuccess = onSuccess || (_ => {});
                 
                 axios
-                    .get(`${baseApiUrl}/commonmeal/commonmeals/${actionName}`, 
+                    .get(`${baseApiUrl}/commonmeals/list/${actionName}`, 
                         {
                                 params : { weekDate : this.weekDate }
                         }
@@ -218,7 +218,7 @@
             },
             saveRegistration(registration) {                
                 axios
-                    .put(`${baseApiUrl}/commonmeal/registrations`, registration)
+                    .put(`${baseApiUrl}/commonmeals/registrations`, registration)
                     .then(response => {
                         console.log("Saved registration: " + registration.id);
                     })                
@@ -229,7 +229,7 @@
             },
             saveChef(chef) {
                 axios
-                    .put(`${baseApiUrl}/commonmeal/chefs`, chef)
+                    .put(`${baseApiUrl}/commonmeals/chefs`, chef)
                     .then(response => {
                         console.log("Saved chef: " + chef.id + " personId: " + chef.personId);
                     })                   
@@ -237,7 +237,18 @@
                         alert("Error saving chef: " + e)
                         console.log(e);
                     })                    
-            },            
+            },
+            saveNote(meal) {
+                axios
+                    .put(`${baseApiUrl}/commonmeals/note`, { id : meal.id, note : meal.note })
+                    .then(response => {
+                        console.log("Saved note: " + meal.id + " note: " + meal.note);
+                    })                   
+                    .catch(e => {
+                        alert("Error saving chef: " + e)
+                        console.log(e);
+                    })         
+            }            
         },
         created() {
             this.loadMeals("activeweek", () => { this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal)); });
