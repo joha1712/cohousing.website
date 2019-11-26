@@ -15,7 +15,7 @@
     
   </head>
   
-  <body>
+  <body class="is-clipped">
     <div id="app"> 
         
         <section class="section">
@@ -40,8 +40,7 @@
 
         </section>       
 
-        <section class="section">     
-
+        <section class="section">
             <div class="tile is-ancestor">                
                 <div class="meal-tile tile" v-for="(commonMeal, idx2) in commonMeals" :class="calcMealTileClass(idx2)">
                     <div class="tile is-child box" >
@@ -96,7 +95,7 @@
                                             </p>
                                         </div>
                                         <div class="control">
-                                            <button type="submit" class="button">
+                                            <button type="submit" class="button" @click="showChefModal(true)">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-shopping-bag"></i>
                                                 </span>
@@ -146,9 +145,26 @@
                         </div>                                                   
                     </div>
                 </div>               
-            </div>
-        </div> 
-      </section>
+            </div>        
+        </section>
+
+      <div id="chefModal" class="modal" :class="{ 'is-active' : chefModalActive }">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Modal title</p>
+                <button class="delete" aria-label="close" @click="showChefModal(false)"></button>
+              </header>
+              <section class="modal-card-body">
+                <!-- Content ... -->
+              </section>
+              <footer class="modal-card-foot">
+                <button class="button is-success" @click="showChefModal(false)">Save changes</button>
+                <button class="button" @click="showChefModal(false)">Cancel</button>
+              </footer>
+        </div>
+      </div>
+
     </div>
 
     <script type="text/javascript">
@@ -177,6 +193,9 @@
                     
                     this.loadMeals("week", () => { this.focusMealIdx--; });                   
                     
+                },
+                showChefModal(doShow) {
+                    this.chefModalActive = (doShow === undefined ? true : doShow);
                 },
                 previousweek() {
                     this.loadMeals("previousweek");
@@ -268,7 +287,8 @@
                 pageSubtitle : "Fællesspisning",
                 weekDate: null,       
                 commonMeals: [],
-                persons: []
+                persons: [],
+                chefModalActive: false
             } 
         });
     </script>
