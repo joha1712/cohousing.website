@@ -10,6 +10,7 @@
     <script src="scripts/axios/axios_v0.18.0.js"></script>
     <script defer src="scripts/fontawesome/fontawesome_v5.0.7.min.js"></script>    
     <script src="scripts/vue/vue_v2.5.16.js"></script> 
+    <script src="scripts/vue/vue-router_v3.1.3.js"></script> 
     <script src="config.js"> type="module"</script> 
     
   </head>
@@ -151,118 +152,125 @@
     </div>
 
     <script type="text/javascript">
-      var webstore = new Vue({
-        el: '#app',
-        methods: {
-            nextday() {                               
-                if (this.focusMealIdx >= this.commonMeals.length -1) {
-                    this.loadMeals("nextweek", () => { this.focusMealIdx = 0; });                    
-                    return;
-                }
-                
-                this.loadMeals("week", () => { this.focusMealIdx++; });       
-            },
-            previousday() {                                
-                if (this.focusMealIdx <= 0) {
-                    this.loadMeals("previousweek", () => { this.focusMealIdx = this.commonMeals.length -1; });
-                    return;   
-                }                
-                
-                this.loadMeals("week", () => { this.focusMealIdx--; });                   
-                
-            },
-            previousweek() {
-                this.loadMeals("previousweek");
-            },
-            nextweek() {
-                this.loadMeals("nextweek");
-            },
-            loadMeals(actionName,onSuccess) {
-                onSuccess = onSuccess || (_ => {});
-                
-                axios
-                    .get(`${baseApiUrl}/commonmeals/list/${actionName}`, 
-                        {
-                                params : { weekDate : this.weekDate }
-                        }
-                    )
-                    .then(response => { 
-                        this.weekDate = response.data.weekDate,               
-                        this.commonMeals = response.data.meals;
-                        this.persons = response.data.persons;
-                        this.pageSubtitle = response.data.title;  
-                        onSuccess();                                            
-                    })
-                    .catch(e => {
-                        alert(`Error fetching meals for ${actionName}: ${e}`)
-                            console.log(e);
-                    })
+        var router = new VueRouter({
+            mode: 'history',
+            routes: []
+        });
+      
+        var vm = new Vue({
+            router,
+            el: '#app',
+            methods: {
+                nextday() {                               
+                    if (this.focusMealIdx >= this.commonMeals.length -1) {
+                        this.loadMeals("nextweek", () => { this.focusMealIdx = 0; });                    
+                        return;
+                    }
+                    
+                    this.loadMeals("week", () => { this.focusMealIdx++; });       
+                },
+                previousday() {                                
+                    if (this.focusMealIdx <= 0) {
+                        this.loadMeals("previousweek", () => { this.focusMealIdx = this.commonMeals.length -1; });
+                        return;   
+                    }                
+                    
+                    this.loadMeals("week", () => { this.focusMealIdx--; });                   
+                    
+                },
+                previousweek() {
+                    this.loadMeals("previousweek");
+                },
+                nextweek() {
+                    this.loadMeals("nextweek");
+                },
+                loadMeals(actionName,onSuccess) {
+                    onSuccess = onSuccess || (_ => {});
+                    let sortExpr = this.$route.query.s || "";
+                    console.log("sortExpr: " + sortExpr);
 
+                    axios
+                        .get(`${baseApiUrl}/commonmeals/list/${actionName}`, 
+                            {
+                                    params : { weekDate : this.weekDate, sortExpr : sortExpr }
+                            }
+                        )
+                        .then(response => { 
+                            this.weekDate = response.data.weekDate,               
+                            this.commonMeals = response.data.meals;
+                            this.persons = response.data.persons;
+                            this.pageSubtitle = response.data.title;  
+                            onSuccess();                                            
+                        })
+                        .catch(e => {
+                            alert(`Error fetching meals for ${actionName}: ${e}`)
+                                console.log(e);
+                        })
+
+                },
+                calcMealRowClass(regNo) {
+                    return (regNo % 2 == 0) ? "meal-reservation-row-even" : "meal-reservation-row-odd";                
+                },
+                calcMealTileClass(mealIdx) {                
+                    // Only show the active meal on mobile displays
+                    return mealIdx == this.focusMealIdx  
+                        ? ""
+                        : "is-hidden-mobile";                    
+                },
+                calcMealTitleClass(chefs) {
+                    return chefs.every(x => x.personId != null) 
+                        ? "meal-chefs-ok" 
+                        : chefs.some(x => x.personId != null) ? "meal-chefs-missingsome" : "";
+                },
+                calcChefClass(chef) {                
+                    return chef.personId != null ? ["meal-chef-ok", "fa-check"] : "fa-user";
+                },
+                saveRegistration(registration) {                
+                    axios
+                        .put(`${baseApiUrl}/commonmeals/registrations`, registration)
+                        .then(response => {
+                            console.log("Saved registration: " + registration.id);
+                        })                
+                        .catch(e => {
+                            alert("Error saving registration: " + e)
+                            console.log(e);
+                        })
+                },
+                saveChef(chef) {
+                    axios
+                        .put(`${baseApiUrl}/commonmeals/chefs`, chef)
+                        .then(response => {
+                            console.log("Saved chef: " + chef.id + " personId: " + chef.personId);
+                        })                   
+                        .catch(e => {
+                            alert("Error saving chef: " + e)
+                            console.log(e);
+                        })                    
+                },
+                saveNote(meal) {
+                    axios
+                        .put(`${baseApiUrl}/commonmeals/note`, { id : meal.id, note : meal.note })
+                        .then(response => {
+                            console.log("Saved note: " + meal.id + " note: " + meal.note);
+                        })                   
+                        .catch(e => {
+                            alert("Error saving chef: " + e)
+                            console.log(e);
+                        })         
+                }            
             },
-            calcMealRowClass(regNo) {
-                return (regNo % 2 == 0) ? "meal-reservation-row-even" : "meal-reservation-row-odd";                
+            created() {
+                this.loadMeals("activeweek", () => { this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal)); });                           
             },
-            calcMealTileClass(mealIdx) {                
-                // Only show the active meal on mobile displays
-                return mealIdx == this.focusMealIdx  
-                    ? ""
-                    : "is-hidden-mobile";                    
-            },
-            calcMealTitleClass(chefs) {
-                return chefs.every(x => x.personId != null) 
-                    ? "meal-chefs-ok" 
-                    : chefs.some(x => x.personId != null) ? "meal-chefs-missingsome" : "";
-            },
-            calcChefClass(chef) {                
-                return chef.personId != null ? ["meal-chef-ok", "fa-check"] : "fa-user";
-            },
-            saveRegistration(registration) {                
-                axios
-                    .put(`${baseApiUrl}/commonmeals/registrations`, registration)
-                    .then(response => {
-                        console.log("Saved registration: " + registration.id);
-                    })                
-                    .catch(e => {
-                        alert("Error saving registration: " + e)
-                        console.log(e);
-                    })
-            },
-            saveChef(chef) {
-                axios
-                    .put(`${baseApiUrl}/commonmeals/chefs`, chef)
-                    .then(response => {
-                        console.log("Saved chef: " + chef.id + " personId: " + chef.personId);
-                    })                   
-                    .catch(e => {
-                        alert("Error saving chef: " + e)
-                        console.log(e);
-                    })                    
-            },
-            saveNote(meal) {
-                axios
-                    .put(`${baseApiUrl}/commonmeals/note`, { id : meal.id, note : meal.note })
-                    .then(response => {
-                        console.log("Saved note: " + meal.id + " note: " + meal.note);
-                    })                   
-                    .catch(e => {
-                        alert("Error saving chef: " + e)
-                        console.log(e);
-                    })         
-            }            
-        },
-        created() {
-            this.loadMeals("activeweek", () => { this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal)); });
-            ;               
-        },
-        data: {            
-            focusMealIdx: -1,
-            pageTitle: "Buske bofælleskab",
-            pageSubtitle : "Fællesspisning",
-            weekDate: null,       
-            commonMeals: [],
-            persons: []
-        } 
-      });
+            data: {            
+                focusMealIdx: -1,
+                pageTitle: "Buske bofælleskab",
+                pageSubtitle : "Fællesspisning",
+                weekDate: null,       
+                commonMeals: [],
+                persons: []
+            } 
+        });
     </script>
   </body>
 </html>
