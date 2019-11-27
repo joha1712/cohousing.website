@@ -89,16 +89,16 @@
                                     <div class="field has-addons">
                                         <div class="control is-expanded">
                                             <p class="control has-icons-left is-fullwidth">
-                                                <input class="input" type="text" placeholder="Noter" v-model="commonMeal.note" @change="saveNote(commonMeal)">
+                                                <input class="input" type="text" placeholder="[Noter...]" v-model="commonMeal.note" @change="saveNote(commonMeal)">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-info"></i>
                                                 </span>
                                             </p>
                                         </div>
                                         <div class="control">
-                                            <button type="submit" class="button" @click="showChefModal(true)">
+                                            <button type="submit" class="button" @click="showChefModal(commonMeal)">
                                                 <span class="icon is-small is-left">
-                                                    <i class="fas fa-shopping-bag"></i>
+                                                    <i class="fas fa-shopping-basket"></i>
                                                 </span>
                                             </button>
                                         </div>
@@ -149,21 +149,77 @@
             </div>        
         </section>
 
-      <div id="chefModal" class="modal" :class="{ 'is-active' : chefModalActive }">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Modal title</p>
-                <button class="delete" aria-label="close" @click="showChefModal(false)"></button>
-              </header>
-              <section class="modal-card-body">
-                <!-- Content ... -->
-              </section>
-              <footer class="modal-card-foot">
-                <button class="button is-success" @click="showChefModal(false)">Save changes</button>
-                <button class="button" @click="showChefModal(false)">Cancel</button>
-              </footer>
-        </div>
+        <div id="chefModal" class="modal" :class="{ 'is-active' : chefModalActive }" v-if="chefModalActiveMeal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title has-text-centered">{{ chefModalActiveMeal.dayName }} {{ chefModalActiveMeal.dateName }}</p>
+                    <button class="delete" aria-label="close" @click="hideChefModal()"></button>
+                </header>
+                <section class="modal-card-body">                    
+                    
+                        
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label">Antal</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field is-narrow">
+                                    <p class="control has-icons-left">
+                                        <input disabled class="input" type="text" value="7 (1 vegetar)">
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="field is-narrow">
+                                    <p class="control has-icons-left">
+                                        <input disabled class="input" type="text" value="2">
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-child"></i>
+                                        </span>                                    
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label">Budget (kr)</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field is-narrow">                                    
+                                    <p class="control has-icons-left">                                        
+                                        <input disabled class="input" type="text" value="225">                                        
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-balance-scale"></i>
+                                        </span>                                          
+                                    </p>                                                                    
+                                </div>
+                            </div>
+                        </div>                
+                    
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Beløb (kr)</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-narrow">
+                                <p class="control has-icons-left">                                        
+                                    <input class="input" type="text" placeholder="[Beløb...]">                                        
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-coins"></i>
+                                    </span>                                    
+                                </p>
+                            </div>
+                        </div>
+                    </div>            
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success" @click="hideChefModal()">Luk</button>                    
+                </footer>
+            </div>
       </div>
 
     </div>
@@ -195,8 +251,13 @@
                     this.loadMeals("week", () => { this.focusMealIdx--; });                   
                     
                 },
-                showChefModal(doShow) {
-                    this.chefModalActive = (doShow === undefined ? true : doShow);
+                showChefModal(meal) {
+                    this.chefModalActive = true;
+                    this.chefModalActiveMeal = meal;
+                },
+                hideChefModal(meal) {
+                    this.chefModalActive = false;
+                    this.chefModalActiveMeal = null;
                 },
                 previousweek() {
                     this.loadMeals("previousweek");
@@ -289,7 +350,8 @@
                 weekDate: null,       
                 commonMeals: [],
                 persons: [],
-                chefModalActive: false
+                chefModalActive: false,
+                chefModalActiveMeal: null
             } 
         });
     </script>

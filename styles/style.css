@@ -273,3 +273,18 @@ button button.is-hovered, .button button:hover {
     .is-visible-mobile-only {        
     }
 }
+
+fieldset {
+    border: none;
+}
+
+.button.is-static {
+    background-color: #343c3d;
+    border-color: rgb(140, 155, 157);;
+}
+
+.input[disabled] {
+    cursor: auto;
+    background-color: #545c5d;
+    border-color: #8c9b9d;
+}
