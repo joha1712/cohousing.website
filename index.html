@@ -89,7 +89,7 @@
                                     <div class="field has-addons">
                                         <div class="control is-expanded">
                                             <p class="control has-icons-left is-fullwidth">
-                                                <input class="input" type="text" placeholder="[Noter...]" v-model="commonMeal.note" @change="saveNote(commonMeal)">
+                                                <input class="input" type="text" v-model="commonMeal.note" @change="saveNote(commonMeal)">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-info"></i>
                                                 </span>
@@ -156,49 +156,48 @@
                     <p class="modal-card-title has-text-centered">{{ chefModalActiveMeal.dayName }} {{ chefModalActiveMeal.dateName }}</p>
                     <button class="delete" aria-label="close" @click="hideChefModal()"></button>
                 </header>
-                <section class="modal-card-body">                    
+                <section class="modal-card-body">                     
                     
-                        
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label">Antal</label>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Antal</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-narrow">
+                                <p class="control has-icons-left">
+                                    <input disabled class="input" type="text" value="7 (1 vegetar)">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                </p>
                             </div>
-                            <div class="field-body">
-                                <div class="field is-narrow">
-                                    <p class="control has-icons-left">
-                                        <input disabled class="input" type="text" value="7 (1 vegetar)">
-                                        <span class="icon is-small is-left">
-                                            <i class="fas fa-user"></i>
-                                        </span>
-                                    </p>
-                                </div>
-                                <div class="field is-narrow">
-                                    <p class="control has-icons-left">
-                                        <input disabled class="input" type="text" value="2">
-                                        <span class="icon is-small is-left">
-                                            <i class="fas fa-child"></i>
-                                        </span>                                    
-                                    </p>
-                                </div>
+                            <div class="field is-narrow">
+                                <p class="control has-icons-left">
+                                    <input disabled class="input" type="text" value="2">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-child"></i>
+                                    </span>                                    
+                                </p>
                             </div>
                         </div>
+                    </div>
+            
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Budget (kr)</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-narrow">                                    
+                                <p class="control has-icons-left">                                        
+                                    <input disabled class="input" type="text" value="225">                                        
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-balance-scale"></i>
+                                    </span>                                          
+                                </p>                                                                    
+                            </div>
+                        </div>
+                    </div>                
                 
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label">Budget (kr)</label>
-                            </div>
-                            <div class="field-body">
-                                <div class="field is-narrow">                                    
-                                    <p class="control has-icons-left">                                        
-                                        <input disabled class="input" type="text" value="225">                                        
-                                        <span class="icon is-small is-left">
-                                            <i class="fas fa-balance-scale"></i>
-                                        </span>                                          
-                                    </p>                                                                    
-                                </div>
-                            </div>
-                        </div>                
-                    
 
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
@@ -207,7 +206,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">                                        
-                                    <input class="input" type="text" placeholder="[Beløb...]">                                        
+                                    <input class="input" type="text" placeholder="[Angiv beløb]">                                        
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-coins"></i>
                                     </span>                                    
