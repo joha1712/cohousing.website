@@ -288,4 +288,6 @@ fieldset {
     background-color: #545c5d;
     border-color: #8c9b9d;
     color: white;
+    -webkit-text-fill-color: white;
+    opacity: 1;
 }
