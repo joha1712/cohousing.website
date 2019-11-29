@@ -96,7 +96,7 @@
                                             </p>
                                         </div>
                                         <div class="control">
-                                            <button type="submit" class="button" @click="showChefModal(commonMeal)">
+                                            <button type="submit" class="button" @click="loadShoppingInfoModal(commonMeal)">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </span>
@@ -149,12 +149,12 @@
             </div>        
         </section>
 
-        <div id="chefModal" class="modal" :class="{ 'is-active' : chefModalActive }" v-if="chefModalActiveMeal">
+        <div id="shoppingInfoModal" class="modal" :class="{ 'is-active' : shoppingInfoModalActive }" v-if="shoppingInfoData">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title has-text-centered">{{ chefModalActiveMeal.dayName }} {{ chefModalActiveMeal.dateName }}</p>
-                    <button class="delete" aria-label="close" @click="hideChefModal()"></button>
+                    <p class="modal-card-title has-text-centered">{{ shoppingInfoData.dayName }} {{ shoppingInfoData.dateName }}</p>
+                    <button class="delete" aria-label="close" @click="hideShoppingInfoModal()"></button>
                 </header>
                 <section class="modal-card-body">                     
                     
@@ -165,7 +165,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input disabled class="input" type="text" value="7 (1 vegetar)">
+                                    <input disabled class="input" type="text" :value="shoppingInfoData.adults">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-user"></i>
                                     </span>
@@ -173,7 +173,7 @@
                             </div>
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input disabled class="input" type="text" value="2">
+                                    <input disabled class="input" type="text" :value="shoppingInfoData.children">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-child"></i>
                                     </span>                                    
@@ -189,7 +189,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">                                    
                                 <p class="control has-icons-left">                                        
-                                    <input disabled class="input" type="text" value="225">                                        
+                                    <input disabled class="input" type="text" :value="shoppingInfoData.budget">                                        
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-balance-scale"></i>
                                     </span>                                          
@@ -197,16 +197,15 @@
                             </div>
                         </div>
                     </div>                
-                
 
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
-                            <label class="label">Beløb (kr)</label>
+                            <label class="label">Indkøb (kr)</label>
                         </div>
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">                                        
-                                    <input class="input" type="text" placeholder="[Angiv beløb]">                                        
+                                    <input class="input" type="text" placeholder="[Angiv beløb]" :value="shoppingInfoData.amount">                                        
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-coins"></i>
                                     </span>                                    
@@ -216,7 +215,7 @@
                     </div>            
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button is-success" @click="hideChefModal()">Luk</button>                    
+                    <button class="button is-success" @click="hideShoppingInfoModal()">Luk</button>                    
                 </footer>
             </div>
       </div>
@@ -250,13 +249,25 @@
                     this.loadMeals("week", () => { this.focusMealIdx--; });                   
                     
                 },
-                showChefModal(meal) {
-                    this.chefModalActive = true;
-                    this.chefModalActiveMeal = meal;
+                loadShoppingInfoModal(meal) {
+                    axios
+                        .get(`${baseApiUrl}/commonmeals/shoppinginfo`, 
+                            {
+                                    params : { mealId : meal.id }
+                            }
+                        )
+                        .then(response => { 
+                            this.shoppingInfoModalActive = true;
+                            this.shoppingInfoData = response.data;                                     
+                        })
+                        .catch(e => {
+                            alert(`Error fetching shopping info for ${actionName}: ${e}`)
+                                console.log(e);
+                        });                    
                 },
-                hideChefModal(meal) {
-                    this.chefModalActive = false;
-                    this.chefModalActiveMeal = null;
+                hideShoppingInfoModal(meal) {
+                    this.shoppingInfoModalActive = false;
+                    this.shoppingInfoData = null;
                 },
                 previousweek() {
                     this.loadMeals("previousweek");
@@ -349,8 +360,8 @@
                 weekDate: null,       
                 commonMeals: [],
                 persons: [],
-                chefModalActive: false,
-                chefModalActiveMeal: null
+                shoppingInfoModalActive: false,
+                shoppingInfoData: null
             } 
         });
     </script>
