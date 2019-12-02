@@ -89,14 +89,14 @@
                                     <div class="field has-addons">
                                         <div class="control is-expanded">
                                             <p class="control has-icons-left is-fullwidth">
-                                                <input class="input" type="text" v-model="commonMeal.note" @change="saveNote(commonMeal)">
+                                                <input class="input" type="text" v-model="commonMeal.note" @change="saveNote(commonMeal)" placeholder="[Noter]">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-info"></i>
                                                 </span>
                                             </p>
                                         </div>
                                         <div class="control">
-                                            <button type="submit" class="button" @click="loadShoppingInfoModal(commonMeal)">
+                                            <button type="submit" class="button" :disabled="calcMealTitleClass(commonMeal.chefs) != 'meal-chefs-ok'" @click="loadShoppingInfoModal(commonMeal)">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </span>
@@ -159,31 +159,31 @@
                 <section class="modal-card-body">                     
                     
                     <div class="field is-horizontal">
-                        <div class="field-label is-normal">
+                        <div class="field-label">
                             <label class="label">Antal</label>
                         </div>
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
                                     <input disabled class="input" type="text" :value="shoppingInfoData.adults">
-                                    <span class="icon is-small is-left">
+                                    <span class="icon is-left">
                                         <i class="fas fa-user"></i>
                                     </span>
                                 </p>
                             </div>
                             <div class="field is-narrow">
-                                <p class="control has-icons-left">
+                                <p class="control has-icons-left is-narrow">
                                     <input disabled class="input" type="text" :value="shoppingInfoData.children">
-                                    <span class="icon is-small is-left">
+                                    <span class="icon is-left">
                                         <i class="fas fa-child"></i>
                                     </span>                                    
                                 </p>
-                            </div>
+                            </div>                            
                         </div>
                     </div>
             
                     <div class="field is-horizontal">
-                        <div class="field-label is-normal">
+                        <div class="field-label">
                             <label class="label">Budget (kr)</label>
                         </div>
                         <div class="field-body">
@@ -196,23 +196,23 @@
                                 </p>                                                                    
                             </div>
                         </div>
-                    </div>                
+                    </div>
 
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">Indkøb (kr)</label>
+                    <div class="field is-horizontal" v-for="expense in shoppingInfoData.expenses">
+                        <div class="field-label">
+                            <label class="label">Indkøb (kr) {{ expense.personName }}</label>
                         </div>
                         <div class="field-body">
-                            <div class="field is-narrow">
+                            <div class="field is-narrow">                                    
                                 <p class="control has-icons-left">                                        
-                                    <input class="input" type="text" placeholder="[Angiv beløb]" :value="shoppingInfoData.amount">                                        
+                                    <input class="input" type="text" v-model="expense.amount" placeholder="[Beløb]" @change="saveExpense(expense)">                                        
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-coins"></i>
-                                    </span>                                    
-                                </p>
-                            </div>
-                        </div>
-                    </div>            
+                                    </span>                                          
+                                </p>                                                                    
+                            </div>                            
+                        </div>                        
+                    </div>
                 </section>
                 <footer class="modal-card-foot">
                     <button class="button is-success" @click="hideShoppingInfoModal()">Luk</button>                    
@@ -348,7 +348,18 @@
                             alert("Error saving chef: " + e)
                             console.log(e);
                         })         
-                }            
+                },
+                saveExpense(expense) {
+                    axios
+                        .put(`${baseApiUrl}/commonmeals/expense`, expense)
+                        .then(response => {
+                            console.log(`Saved expense ${expense.id} amount: ${expense.amount} for ${expense.personName}`);
+                        })                   
+                        .catch(e => {
+                            alert("Error saving expense: " + e)
+                            console.log(e);
+                        })         
+                }                    
             },
             created() {
                 this.loadMeals("activeweek", () => { this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal)); });                           
@@ -361,7 +372,9 @@
                 commonMeals: [],
                 persons: [],
                 shoppingInfoModalActive: false,
-                shoppingInfoData: null
+                shoppingInfoData: {
+                    expenses : []
+                }
             } 
         });
     </script>

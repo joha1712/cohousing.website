@@ -283,7 +283,7 @@ fieldset {
     border-color: rgb(140, 155, 157);;
 }
 
-.input[disabled] {
+.button[disabled], .input[disabled] {
     cursor: auto;
     background-color: #545c5d;
     border-color: #8c9b9d;
@@ -291,3 +291,9 @@ fieldset {
     -webkit-text-fill-color: white;
     opacity: 1;
 }
+
+@media screen and (min-width: 769px), print {
+    .is-extra-wide .field-label {
+      flex-grow: 2; /* overwrites previous value of 1 */
+    }
+  }
