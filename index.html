@@ -165,7 +165,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input disabled class="input" type="text" :value="shoppingInfoData.adults">
+                                    <input disabled class="input" type="text" :value="calcShoppingInfoAdults(shoppingInfoData)">
                                     <span class="icon is-left">
                                         <i class="fas fa-user"></i>
                                     </span>
@@ -274,6 +274,16 @@
                 },
                 nextweek() {
                     this.loadMeals("nextweek");
+                },
+                calcShoppingInfoAdults(shoppingInfoData) {
+                    if (shoppingInfoData.vegetarians == 0) {
+                        return shoppingInfoData.adults;
+                    }
+                    if (shoppingInfoData.vegetarians == 1) {
+                        return `${shoppingInfoData.adults} (1 vegetar)`;
+                    }
+                    return `${shoppingInfoData.adults} (${shoppingInfoData.vegetarians} vegetarer)`;
+
                 },
                 loadMeals(actionName,onSuccess) {
                     onSuccess = onSuccess || (_ => {});
