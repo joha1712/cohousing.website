@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bofællesskab</title>
     <link rel="stylesheet" href="styles/bulma/darkly/bulmaswatch_v0.7.1.min.css">
+    <link rel="stylesheet" href="styles/bulma/bulma-extensions.min.css">
     <link rel="stylesheet" href="styles/style.css">
         
     <script src="scripts/axios/axios_v0.18.0.js"></script>
@@ -18,7 +19,7 @@
   
   <body class="is-clipped">
     <div id="app"> 
-        
+    <div class="container">
         <section class="section">
             <div class="container has-text-centered">
                 <h1 class="title is-hidden-mobile-bottommarginfix">
@@ -112,7 +113,7 @@
 
                         <div class="box meal-reservation-group" v-for="group in commonMeal.registrationGroups">
                             
-                            <div class="meal-reservation-row columns is-mobile is-marginless" v-for="(registration, index) in group.registrations" :class="calcMealRowClass(registration.regNo)">
+                            <div class="meal-reservation-row columns is-vcentered is-mobile is-marginless" v-for="(registration, index) in group.registrations" :class="calcMealRowClass(registration.regNo)">
                                 <div class="column is-paddingless is-1" >
                                     <span v-show="registration.attending" class="icon is-small" style="vertical-align:text-bottom;">
                                           <i class="fas fa-check-circle"></i>
@@ -123,23 +124,28 @@
                                     {{ registration.personName }}							
                                 </div>                            
                                 
-                                <div class="column is-7 is-paddingless">                                
+                                <div class="column is-5 is-paddingless">                                
                                     <!-- This level is need to keep the radio together in the column (so it doesn´t split line when resizing) -->
                                     <nav class="level">                                         
                                         <div class="level-left">
                                             <div class="level-item">
-                                                <div class="control">
-                                                    <label class="radio">
-                                                        <input type="radio" :value="true" v-model="registration.attending" @change="saveRegistration(registration)" >
-                                                        Ja
-                                                    </label>
-                                                    <label class="radio">
-                                                        <input type="radio" :value="false" v-model="registration.attending" @change="saveRegistration(registration)">
-                                                        Nej
-                                                    </label>
-                                                </div>                                                
+                                                <div class="field">
+                                                    <input type="checkbox" :id="registration.id" :name="registration.id" @change="saveRegistration(registration)" class="switch is-rounded is-rtl is-outlined" v-model="registration.attending" >
+                                                    <label :for="registration.id"></label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </nav>                                
+                                </div>
+
+                                <div class="column is-2 is-paddingless">
+                                    <p class="control">
+                                        <button class="button is-small" style="border-color: #4c5759;">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-user-plus"></i>
+                                        </span>
+                                        </button>
+                                    </p>                                        
                                 </div>
                             </div>
                         </div>                                                   
@@ -219,6 +225,7 @@
             </div>
       </div>
 
+    </div>  
     </div>
 
     <script type="text/javascript">
