@@ -6,13 +6,13 @@
     <title>Bofællesskab</title>
     <link rel="stylesheet" href="styles/bulma/darkly/bulmaswatch_v0.7.1.min.css">
     <link rel="stylesheet" href="styles/style.css">
-    
+        
     <script src="scripts/axios/axios_v0.18.0.js"></script>
     <script defer src="scripts/fontawesome/fontawesome_solid_v5.11.2.min.js"></script>    
     <script defer src="scripts/fontawesome/fontawesome_v5.11.2.min.js"></script>   
     <script src="scripts/vue/vue_v2.5.16.js"></script> 
     <script src="scripts/vue/vue-router_v3.1.3.js"></script> 
-    <script src="config.js"> type="module"</script> 
+    <script src="config.js"> type="module"</script>
     
   </head>
   
@@ -137,8 +137,7 @@
                                                         <input type="radio" :value="false" v-model="registration.attending" @change="saveRegistration(registration)">
                                                         Nej
                                                     </label>
-                                                </div>
-                                            </div>
+                                                </div>                                                
                                         </div>
                                     </nav>                                
                                 </div>
@@ -165,7 +164,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input disabled class="input" type="text" :value="calcShoppingInfoAdults(shoppingInfoData)">
+                                    <input disabled class="input" type="text" :value="calcShoppingInfoPersonGroupText(shoppingInfoData.adults)">
                                     <span class="icon is-left">
                                         <i class="fas fa-user"></i>
                                     </span>
@@ -173,7 +172,7 @@
                             </div>
                             <div class="field is-narrow">
                                 <p class="control has-icons-left is-narrow">
-                                    <input disabled class="input" type="text" :value="shoppingInfoData.children">
+                                    <input disabled class="input" type="text" :value="calcShoppingInfoPersonGroupText(shoppingInfoData.children)">
                                     <span class="icon is-left">
                                         <i class="fas fa-child"></i>
                                     </span>                                    
@@ -275,14 +274,14 @@
                 nextweek() {
                     this.loadMeals("nextweek");
                 },
-                calcShoppingInfoAdults(shoppingInfoData) {
-                    if (shoppingInfoData.vegetarians == 0) {
-                        return shoppingInfoData.adults;
+                calcShoppingInfoPersonGroupText(personGroup) {
+                    if (personGroup.vegetarians == 0) {
+                        return personGroup.total;
                     }
-                    if (shoppingInfoData.vegetarians == 1) {
-                        return `${shoppingInfoData.adults} (1 vegetar)`;
+                    if (personGroup.vegetarians == 1) {
+                        return `${personGroup.total} (1 vegetar)`;
                     }
-                    return `${shoppingInfoData.adults} (${shoppingInfoData.vegetarians} vegetarer)`;
+                    return `${personGroup.total} (${personGroup.vegetarians} vegetarer)`;
 
                 },
                 loadMeals(actionName,onSuccess) {
@@ -383,7 +382,9 @@
                 persons: [],
                 shoppingInfoModalActive: false,
                 shoppingInfoData: {
-                    expenses : []
+                    expenses : [],
+                    adults : {total : null, vegetarians : null},
+                    children : {total : null, vegetarians : null}
                 }
             } 
         });
