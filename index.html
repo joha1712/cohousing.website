@@ -140,7 +140,7 @@
 
                                 <div class="column is-2 is-paddingless">
                                     <p class="control">
-                                        <button class="button is-small" style="border-color: #4c5759;">
+                                        <button class="button is-small" style="border-color: #4c5759;" @click="loadGuestRegistrationsModal(registration)">
                                         <span class="icon is-small">
                                             <i class="fas fa-user-plus"></i>
                                         </span>
@@ -154,11 +154,11 @@
             </div>        
         </section>
 
-        <div id="shoppingInfoModal" class="modal" :class="{ 'is-active' : shoppingInfoModalActive }" v-if="shoppingInfoData">
+        <div id="shoppingInfoModal" class="modal" :class="{ 'is-active' : shoppingInfoModalActive }" v-if="shoppingInfo">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title has-text-centered">{{ shoppingInfoData.dayName }} {{ shoppingInfoData.dateName }}</p>
+                    <p class="modal-card-title has-text-centered">{{ shoppingInfo.dayName }} {{ shoppingInfo.dateName }}</p>
                     <button class="delete" aria-label="close" @click="hideShoppingInfoModal()"></button>
                 </header>
                 <section class="modal-card-body">                     
@@ -170,7 +170,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input disabled class="input" type="text" :value="calcShoppingInfoPersonGroupText(shoppingInfoData.adults)">
+                                    <input disabled class="input" type="text" :value="calcShoppingInfoPersonGroupText(shoppingInfo.adults)">
                                     <span class="icon is-left">
                                         <i class="fas fa-user"></i>
                                     </span>
@@ -178,7 +178,7 @@
                             </div>
                             <div class="field is-narrow">
                                 <p class="control has-icons-left is-narrow">
-                                    <input disabled class="input" type="text" :value="calcShoppingInfoPersonGroupText(shoppingInfoData.children)">
+                                    <input disabled class="input" type="text" :value="calcShoppingInfoPersonGroupText(shoppingInfo.children)">
                                     <span class="icon is-left">
                                         <i class="fas fa-child"></i>
                                     </span>                                    
@@ -194,7 +194,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">                                    
                                 <p class="control has-icons-left">                                        
-                                    <input disabled class="input" type="text" :value="shoppingInfoData.budget">                                        
+                                    <input disabled class="input" type="text" :value="shoppingInfo.budget">                                        
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-balance-scale"></i>
                                     </span>                                          
@@ -203,7 +203,7 @@
                         </div>
                     </div>
 
-                    <div class="field is-horizontal" v-for="expense in shoppingInfoData.expenses">
+                    <div class="field is-horizontal" v-for="expense in shoppingInfo.expenses">
                         <div class="field-label">
                             <label class="label">Indkøb (kr) {{ expense.personName }}</label>
                         </div>
@@ -225,7 +225,69 @@
             </div>
       </div>
 
-    </div>  
+        <div id="guestRegistrationModal" class="modal" :class="{ 'is-active' : guestRegistrationModalActive }" v-if="guestRegistrations">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title has-text-centered">Gæster til {{ guestRegistrations.hostPersonName }} </p>
+                    <button class="delete" aria-label="close" @click="hideGuestRegistrationsModal()"></button>
+                </header>
+                <section class="modal-card-body">                     
+                    
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Antal voksne</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-narrow">
+                                <p class="control has-icons-left">
+                                    <input class="input" type="text" :value="guestRegistrations.adults.conventional" placeholder="[Antal]">
+                                    <span class="icon is-left">                                        
+                                        <i class="fas fa-drumstick-bite"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="field is-narrow">
+                                <p class="control has-icons-left is-narrow">
+                                    <input class="input" type="text" :value="guestRegistrations.adults.vegetarians" placeholder="[Antal]">
+                                    <span class="icon is-left">
+                                        <i class="fas fa-seedling"></i>
+                                    </span>                                    
+                                </p>
+                            </div>                            
+                        </div>
+                    </div>
+            
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Antal børn</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-narrow">
+                                <p class="control has-icons-left">
+                                    <input class="input" type="text" :value="guestRegistrations.children.conventional" placeholder="[Antal]">
+                                    <span class="icon is-left">                                        
+                                        <i class="fas fa-drumstick-bite"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="field is-narrow">
+                                <p class="control has-icons-left is-narrow">
+                                    <input class="input" type="text" :value="guestRegistrations.children.vegetarians" placeholder="[Antal]">
+                                    <span class="icon is-left">                                       
+                                        <i class="fas fa-seedling"></i>
+                                    </span>                                                                   
+                                </p>
+                            </div>                            
+                        </div>
+                    </div>                   
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success" @click="hideGuestRegistrationsModal()">Luk</button>                    
+                </footer>
+                </div>
+            </div>
+        </div>  
     </div>
 
     <script type="text/javascript">
@@ -264,16 +326,37 @@
                         )
                         .then(response => { 
                             this.shoppingInfoModalActive = true;
-                            this.shoppingInfoData = response.data;                                     
+                            this.shoppingInfo = response.data;                                     
                         })
                         .catch(e => {
-                            alert(`Error fetching shopping info for ${actionName}: ${e}`)
+                            alert(`Error fetching shopping info for meal ${meal.id}: ${e}`)
                                 console.log(e);
                         });                    
                 },
                 hideShoppingInfoModal(meal) {
                     this.shoppingInfoModalActive = false;
-                    this.shoppingInfoData = null;
+                    this.shoppingInfo = null;
+                },
+                loadGuestRegistrationsModal(registration) {
+                    axios
+                        .get(`${baseApiUrl}/commonmeals/guestregistrations/list`, 
+                            {
+                                    params : { registrationId : registration.id }
+                            }
+                        )
+                        .then(response => { 
+                            this.guestRegistrationModalActive = true;
+                            this.guestRegistrations = response.data;
+                            this.guestRegistrations.hostPersonName = registration.personName;                                  
+                        })
+                        .catch(e => {
+                            alert(`Error fetching guest registrations for registration with id '${registration.id}': ${e}`)
+                                console.log(e);
+                        });            
+                },
+                hideGuestRegistrationsModal(registration) {
+                    this.guestRegistrationsModalActive = false;
+                    this.guestRegistrations = null;
                 },
                 previousweek() {
                     this.loadMeals("previousweek");
@@ -388,11 +471,13 @@
                 commonMeals: [],
                 persons: [],
                 shoppingInfoModalActive: false,
-                shoppingInfoData: {
+                shoppingInfo: {
                     expenses : [],
                     adults : {total : null, vegetarians : null},
                     children : {total : null, vegetarians : null}
-                }
+                },
+                guestRegistrationsModalActive : false,
+                guestRegistrations : null
             } 
         });
     </script>
