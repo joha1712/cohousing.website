@@ -23,11 +23,23 @@ deploy:
     project: ./dist/
     domain: https://buske-dev.surge.sh
     skip_cleanup: true
+    on:      
+      branch: master
+      
+  - provider: surge
+    project: ./dist/
+    domain: https://buske.surge.sh
+    skip_cleanup: true
+    on:      
+      branch: release
+  
   - provider: releases
     api_key: $GITHUBPAGES_RELEASETOKEN
     file: "$TRAVIS_PACKAGE_FILE"
     skip_cleanup: true
     name: "v$TRAVIS_PACKAGE_VERSION"
-    draft: true
+    draft: false
+    on:      
+      branch: release
 after_deploy:
   - rm $TRAVIS_PACKAGE_FILE
