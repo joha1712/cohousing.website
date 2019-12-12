@@ -11,7 +11,7 @@ Common meal features are currently supported
 * Invite guests (none community members) for a meal
 * Mobile friendly views (responsive design)
 * Add individual meal expenses (shopping expenses)
-* Register community members (vegan, vegitarian or conventional)
+* Register community members (child, adult, vegan, vegitarian, conventional etc.)
 * Add notes on a common meal
 
 Feel free to download the code and build it yourself (also remember the server component at https://github.com/joha1712/cohousing.server).
