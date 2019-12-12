@@ -14,5 +14,8 @@ Common meal features are currently supported
 * Register community members (child, adult, vegan, vegitarian, conventional etc.)
 * Add notes on a common meal
 
-Feel free to download the code and build it yourself (also remember the server component at https://github.com/joha1712/cohousing.server).
-You community can also join existing platform for free (write a mail to joha1712@protonmail.com). Currently we only support Danish communities (due to current scoope)
+Feel free to download the code and build it yourself.
+Also remember the server component at https://github.com/joha1712/cohousing.server).
+
+You community can also join existing platform for free (write a mail to joha1712@protonmail.com). 
+Currently we only support Danish communities (due to current scoope)
