@@ -1,4 +1,4 @@
-# cohousing.web
+# Cohosing platform - aka "Fælles" (cohousing.web)
 Open / free software for managing cohousing / community living
 Currently the features for "cordination of the common meals are supported - but more features will come eventually. 
 
