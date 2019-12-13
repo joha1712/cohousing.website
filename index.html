@@ -140,7 +140,7 @@
 
                                 <div class="column is-2 is-paddingless">
                                     <p class="control">
-                                        <button class="button is-small" style="border-color: #4c5759;" @click="loadGuestRegistrationsModal(registration)">
+                                        <button class="button is-small" style="border-color: #4c5759;" @click="loadGuestRegistrationModal(registration)">
                                         <span class="icon is-small">
                                             <i class="fas fa-user-plus"></i>
                                         </span>
@@ -225,12 +225,12 @@
             </div>
       </div>
 
-        <div id="guestRegistrationModal" class="modal" :class="{ 'is-active' : guestRegistrationModalActive }" v-if="guestRegistrations">
+        <div id="guestRegistrationModal" class="modal" :class="{ 'is-active' : guestRegistrationModalActive }" v-if="guestRegistration">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title has-text-centered">Gæster til {{ guestRegistrations.hostPersonName }} </p>
-                    <button class="delete" aria-label="close" @click="hideGuestRegistrationsModal()"></button>
+                    <p class="modal-card-title has-text-centered">Gæster til {{ guestRegistration.hostPersonName }} </p>
+                    <button class="delete" aria-label="close" @click="hideGuestRegistrationModal()"></button>
                 </header>
                 <section class="modal-card-body">                     
                     
@@ -241,7 +241,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input class="input" type="text" :value="guestRegistrations.adults.conventional" placeholder="[Antal]">
+                                    <input class="input" type="text" v-model="guestRegistration.adults.conventional" @change="saveGuestRegistration(guestRegistration)">
                                     <span class="icon is-left">                                        
                                         <i class="fas fa-drumstick-bite"></i>
                                     </span>
@@ -249,7 +249,7 @@
                             </div>
                             <div class="field is-narrow">
                                 <p class="control has-icons-left is-narrow">
-                                    <input class="input" type="text" :value="guestRegistrations.adults.vegetarians" placeholder="[Antal]">
+                                    <input class="input" type="text" v-model="guestRegistration.adults.vegetarians" @change="saveGuestRegistration(guestRegistration)">
                                     <span class="icon is-left">
                                         <i class="fas fa-seedling"></i>
                                     </span>                                    
@@ -265,7 +265,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input class="input" type="text" :value="guestRegistrations.children.conventional" placeholder="[Antal]">
+                                    <input class="input" type="text" v-model="guestRegistration.children.conventional" @change="saveGuestRegistration(guestRegistration)">
                                     <span class="icon is-left">                                        
                                         <i class="fas fa-drumstick-bite"></i>
                                     </span>
@@ -273,7 +273,7 @@
                             </div>
                             <div class="field is-narrow">
                                 <p class="control has-icons-left is-narrow">
-                                    <input class="input" type="text" :value="guestRegistrations.children.vegetarians" placeholder="[Antal]">
+                                    <input class="input" type="text" v-model="guestRegistration.children.vegetarians" @change="saveGuestRegistration(guestRegistration)">
                                     <span class="icon is-left">                                       
                                         <i class="fas fa-seedling"></i>
                                     </span>                                                                   
@@ -283,7 +283,7 @@
                     </div>                   
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button is-success" @click="hideGuestRegistrationsModal()">Luk</button>                    
+                    <button class="button is-success" @click="hideGuestRegistrationModal()">Luk</button>                    
                 </footer>
                 </div>
             </div>
@@ -337,26 +337,26 @@
                     this.shoppingInfoModalActive = false;
                     this.shoppingInfo = null;
                 },
-                loadGuestRegistrationsModal(registration) {
+                loadGuestRegistrationModal(registration) {
                     axios
-                        .get(`${baseApiUrl}/commonmeals/guestregistrations/list`, 
+                        .get(`${baseApiUrl}/commonmeals/guestregistration`, 
                             {
-                                    params : { registrationId : registration.id }
+                                    params : { regId : registration.id }
                             }
                         )
                         .then(response => { 
                             this.guestRegistrationModalActive = true;
-                            this.guestRegistrations = response.data;
-                            this.guestRegistrations.hostPersonName = registration.personName;                                  
+                            this.guestRegistration = response.data;
+                            this.guestRegistration.hostPersonName = registration.personName;                                  
                         })
                         .catch(e => {
                             alert(`Error fetching guest registrations for registration with id '${registration.id}': ${e}`)
                                 console.log(e);
                         });            
                 },
-                hideGuestRegistrationsModal(registration) {
-                    this.guestRegistrationsModalActive = false;
-                    this.guestRegistrations = null;
+                hideGuestRegistrationModal(registration) {
+                    this.guestRegistrationModalActive = false;
+                    this.guestRegistration = null;
                 },
                 previousweek() {
                     this.loadMeals("previousweek");
@@ -419,10 +419,22 @@
                     axios
                         .put(`${baseApiUrl}/commonmeals/registrations`, registration)
                         .then(response => {
-                            console.log("Saved registration: " + registration.id);
+                            console.log("Saved registration: " + registration.id);                            
                         })                
                         .catch(e => {
                             alert("Error saving registration: " + e)
+                            console.log(e);
+                        })
+                },
+                saveGuestRegistration(reg) {                    
+                    axios
+                        .put(`${baseApiUrl}/commonmeals/guestregistration`, reg)
+                        .then(response => {
+                            console.log("Saved guest registration: " + reg.id);
+                            this.guestRegistration = response.data;
+                        })                
+                        .catch(e => {
+                            alert("Error saving guest registration: " + e)
                             console.log(e);
                         })
                 },
@@ -476,8 +488,8 @@
                     adults : {total : null, vegetarians : null},
                     children : {total : null, vegetarians : null}
                 },
-                guestRegistrationsModalActive : false,
-                guestRegistrations : null
+                guestRegistrationModalActive : false,
+                guestRegistration : null
             } 
         });
     </script>
