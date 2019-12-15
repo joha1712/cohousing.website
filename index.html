@@ -140,7 +140,7 @@
 
                                 <div class="column is-2 is-paddingless">
                                     <p class="control">
-                                        <button class="button is-small" style="border-color: #4c5759;" @click="loadGuestRegistrationModal(registration)">
+                                        <button class="button is-small" style="border-color: #4c5759;" @click="loadGuestsRegModal(registration)">
                                         <span class="icon is-small">
                                             <i class="fas fa-user-plus"></i>
                                         </span>
@@ -225,12 +225,12 @@
             </div>
       </div>
 
-        <div id="guestRegistrationModal" class="modal" :class="{ 'is-active' : guestRegistrationModalActive }" v-if="guestRegistration">
+        <div id="guestsRegModal" class="modal" :class="{ 'is-active' : guestsRegModalActive }" v-if="guestsReg">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title has-text-centered">Gæster til {{ guestRegistration.hostPersonName }} </p>
-                    <button class="delete" aria-label="close" @click="hideGuestRegistrationModal()"></button>
+                    <p class="modal-card-title has-text-centered">Gæster til {{ guestsReg.personName }} </p>
+                    <button class="delete" aria-label="close" @click="hideGuestsRegModal()"></button>
                 </header>
                 <section class="modal-card-body">                     
                     
@@ -241,7 +241,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input class="input" type="text" v-model="guestRegistration.adults.conventional" @change="saveGuestRegistration(guestRegistration)">
+                                    <input class="input" type="text" v-model="guestsReg.guests.adults.conventional" @change="saveGuestsReg(guestsReg)">
                                     <span class="icon is-left">                                        
                                         <i class="fas fa-drumstick-bite"></i>
                                     </span>
@@ -249,7 +249,7 @@
                             </div>
                             <div class="field is-narrow">
                                 <p class="control has-icons-left is-narrow">
-                                    <input class="input" type="text" v-model="guestRegistration.adults.vegetarians" @change="saveGuestRegistration(guestRegistration)">
+                                    <input class="input" type="text" v-model="guestsReg.guests.adults.vegetarians" @change="saveGuestsReg(guestsReg)">
                                     <span class="icon is-left">
                                         <i class="fas fa-seedling"></i>
                                     </span>                                    
@@ -265,7 +265,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input class="input" type="text" v-model="guestRegistration.children.conventional" @change="saveGuestRegistration(guestRegistration)">
+                                    <input class="input" type="text" v-model="guestsReg.guests.children.conventional" @change="saveGuestsReg(guestsReg)">
                                     <span class="icon is-left">                                        
                                         <i class="fas fa-drumstick-bite"></i>
                                     </span>
@@ -273,7 +273,7 @@
                             </div>
                             <div class="field is-narrow">
                                 <p class="control has-icons-left is-narrow">
-                                    <input class="input" type="text" v-model="guestRegistration.children.vegetarians" @change="saveGuestRegistration(guestRegistration)">
+                                    <input class="input" type="text" v-model="guestsReg.guests.children.vegetarians" @change="saveGuestsReg(guestsReg)">
                                     <span class="icon is-left">                                       
                                         <i class="fas fa-seedling"></i>
                                     </span>                                                                   
@@ -283,7 +283,7 @@
                     </div>                   
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button is-success" @click="hideGuestRegistrationModal()">Luk</button>                    
+                    <button class="button is-success" @click="hideGuestsRegModal()">Luk</button>                    
                 </footer>
                 </div>
             </div>
@@ -337,26 +337,13 @@
                     this.shoppingInfoModalActive = false;
                     this.shoppingInfo = null;
                 },
-                loadGuestRegistrationModal(registration) {
-                    axios
-                        .get(`${baseApiUrl}/commonmeals/guestregistration`, 
-                            {
-                                    params : { regId : registration.id }
-                            }
-                        )
-                        .then(response => { 
-                            this.guestRegistrationModalActive = true;
-                            this.guestRegistration = response.data;
-                            this.guestRegistration.hostPersonName = registration.personName;                                  
-                        })
-                        .catch(e => {
-                            alert(`Error fetching guest registrations for registration with id '${registration.id}': ${e}`)
-                                console.log(e);
-                        });            
+                loadGuestsRegModal(registration) {
+                    this.guestsRegModalActive = true;
+                    this.guestsReg = registration;                                                  
                 },
-                hideGuestRegistrationModal(registration) {
-                    this.guestRegistrationModalActive = false;
-                    this.guestRegistration = null;
+                hideGuestsRegModal(registration) {
+                    this.guestsRegModalActive = false;
+                    this.guestsReg = null;
                 },
                 previousweek() {
                     this.loadMeals("previousweek");
@@ -426,17 +413,8 @@
                             console.log(e);
                         })
                 },
-                saveGuestRegistration(reg) {                    
-                    axios
-                        .put(`${baseApiUrl}/commonmeals/guestregistration`, reg)
-                        .then(response => {
-                            console.log("Saved guest registration: " + reg.id);
-                            this.guestRegistration = response.data;
-                        })                
-                        .catch(e => {
-                            alert("Error saving guest registration: " + e)
-                            console.log(e);
-                        })
+                saveGuestsReg(reg) {                    
+                    this.saveRegistration(reg);
                 },
                 saveChef(chef) {
                     axios
@@ -488,8 +466,8 @@
                     adults : {total : null, vegetarians : null},
                     children : {total : null, vegetarians : null}
                 },
-                guestRegistrationModalActive : false,
-                guestRegistration : null
+                guestsRegModalActive : false,
+                guestsReg : null
             } 
         });
     </script>
