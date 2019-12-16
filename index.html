@@ -55,12 +55,7 @@
                                 
                             <div class="meal-chef-row columns is-mobile is-marginless" v-for="(chef, idx) in commonMeal.chefs">                                
                                 
-                                <div class="column is-paddingless is-1" >
-                                    <span v-show="chef.personId != null" class="icon is-small" style="vertical-align:bottom;">
-                                          <i class="fas fa-check-circle"></i>
-                                    </span>
-                                </div>
-                            
+                                <div class="column is-paddingless is-1" ></div>
                                 <div class="column is-paddingless is-10" >
                                     <div class="field">
                                         <p class="control is-expanded has-icons-left">
@@ -77,14 +72,12 @@
                                     </div>                                  
                                 </div>
 
-                                <div class="column is-paddingless is-1">                                                                       
-                                </div>
+                                <div class="column is-paddingless is-1"></div>
                             </div>   
                             
                             <div class="meal-chef-row columns is-mobile is-marginless">                                
                                 
-                                <div class="column is-paddingless is-1" >                                    
-                                </div>
+                                <div class="column is-paddingless is-1" ></div>
                             
                                 <div class="column is-paddingless is-10" >
                                     <div class="field has-addons">
@@ -106,19 +99,15 @@
                                     </div>
                                 </div>
 
-                                <div class="column is-paddingless is-1">                                                                      
-                                </div>
+                                <div class="column is-paddingless is-1"></div>
                             </div>
                         </div>
 
                         <div class="box meal-reservation-group" v-for="group in commonMeal.registrationGroups">
                             
                             <div class="meal-reservation-row columns is-vcentered is-mobile is-marginless" v-for="(registration, index) in group.registrations" :class="calcMealRowClass(registration.regNo)">
-                                <div class="column is-paddingless is-1" >
-                                    <span v-show="registration.attending" class="icon is-small" style="vertical-align:text-bottom;">
-                                          <i class="fas fa-check-circle"></i>
-                                    </span>
-                                </div>							
+                                
+                                <div class="column is-paddingless is-1"></div>
                                 
                                 <div class="column is-4 is-paddingless">								
                                     {{ registration.personName }}							
@@ -138,7 +127,8 @@
                                     </nav>                                
                                 </div>
 
-                                <div class="column is-2 is-paddingless">
+                                <div
+                                 class="column is-2 is-paddingless">
                                     <p class="control">
                                         <button class="button is-small" style="border-color: #4c5759;" @click="loadGuestsRegModal(registration)">
                                         <span class="icon is-small">
@@ -146,7 +136,7 @@
                                         </span>
                                         </button>
                                     </p>                                        
-                                </div>
+                                </div>                                
                             </div>
                         </div>                                                   
                     </div>
