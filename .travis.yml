@@ -8,6 +8,11 @@ env:
     - SURGE_LOGIN=$SURGE_RELEASELOGIN
     - SURGE_TOKEN=$SURGE_RELEASETOKEN
     - BASEAPI_URL=$BASEAPI_URL
+    
+# blacklist
+branches:
+  except:
+    - /untagged-.*/
 
 notifications:
   email:
