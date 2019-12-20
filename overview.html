@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bofællesskab</title>
+    <link rel="stylesheet" href="styles/bulma/darkly/bulmaswatch_v0.7.1.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+        
+    <script src="scripts/axios/axios_v0.18.0.js"></script>
+    <script defer src="scripts/fontawesome/fontawesome_solid_v5.11.2.min.js"></script>    
+    <script defer src="scripts/fontawesome/fontawesome_v5.11.2.min.js"></script>   
+    <script src="scripts/vue/vue_v2.5.16.js"></script>     
+    <script src="config.js"> type="module"</script>
+    
+  </head>
+  
+  <body class="is-clipped">
+    <div id="app"> 
+        <div class="container">
+            <section class="section">
+                <div class="table-container">
+                    <table class="table" style="margin-left: auto;margin-right: auto;">
+                        <thead>                    
+                            <tr>
+                                <th>Navn</th>
+                                <th>Kok</th>
+                                <th>Deltager</th>
+                                <th>Gæster (voksne)</th>
+                                <th>Gæster (børn)</th>
+                                <th>Beløb</th>
+                                <th>Udlæg</th>
+                                <th>Netto</th>         
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="row in overview">
+                                <th>{{ row.personName }}</th>
+                                <th>{{ row.chefCount }}</th>
+                                <th>{{ row.mealCount }}</th>
+                                <th>{{ row.adultGuests }}</th>
+                                <th>{{ row.childGuests }}</th>
+                                <th>{{ row.mealCostSum }}</th>
+                                <th>{{ row.expensesSum }} </th>
+                                <th>{{ row.nettoSum }} </th>
+                            </tr>                                            
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+             
+        var vm = new Vue({            
+            el: '#app',
+            data: {   
+                overview : null
+            },
+            methods : {
+                loadStatistics(meal) {
+                    axios
+                        .get(`${baseApiUrl}/commonmeals/statistics/overview`)
+                        .then(response => { 
+                            this.overview = response.data;                                                               
+                        })
+                        .catch(e => {
+                            alert(`Error fetching shopping info for meal ${meal.id}: ${e}`)
+                                console.log(e);
+                        });                    
+                },
+            },
+            created() {
+                this.loadStatistics();                           
+            },
+        });
+    </script>
+  </body>
+</html>
