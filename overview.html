@@ -5,47 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bofællesskab</title>
     <link rel="stylesheet" href="styles/bulma/darkly/bulmaswatch_v0.7.1.min.css">
+    <link rel="stylesheet" href="styles/bulma/bulma-extensions.min.css">
+    <link rel="stylesheet" href="styles/datepicker/flatpickr.dark.min.css">      
     <link rel="stylesheet" href="styles/style.css">
         
     <script src="scripts/axios/axios_v0.18.0.js"></script>
     <script defer src="scripts/fontawesome/fontawesome_solid_v5.11.2.min.js"></script>    
     <script defer src="scripts/fontawesome/fontawesome_v5.11.2.min.js"></script>   
-    <script src="scripts/vue/vue_v2.5.16.js"></script>     
+    <script src="scripts/vue/vue_v2.5.16.js"></script>
+    <script src="scripts/datepicker/flatpickr.min.js"></script>
+    <script src="scripts/datepicker/flatpickr.da.min.js"></script>
+      
     <script src="config.js"> type="module"</script>
     
   </head>
   
   <body class="is-clipped">
     <div id="app"> 
+        
         <div class="container">
+           
+            <section class ="section">
+                <div class="container has-text-centered">
+                    <h1 class="title is-hidden-mobile-bottommarginfix">
+                        {{ pageTitle }}
+                    </h1>
+                    <p class="subtitle is-hidden-mobile">
+                        {{ pageSubtitle }}
+                    </p>
+                </div>
+            </section>
+            
             <section class="section">
-                <div class="table-container">
-                    <table class="table" style="margin-left: auto;margin-right: auto;">
-                        <thead>                    
-                            <tr>
-                                <th>Navn</th>
-                                <th>Kok</th>
-                                <th>Deltager</th>
-                                <th>Gæster (voksne)</th>
-                                <th>Gæster (børn)</th>
-                                <th>Beløb</th>
-                                <th>Udlæg</th>
-                                <th>Netto</th>         
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="row in overview">
-                                <th>{{ row.personName }}</th>
-                                <th>{{ row.chefCount }}</th>
-                                <th>{{ row.mealCount }}</th>
-                                <th>{{ row.adultGuests }}</th>
-                                <th>{{ row.childGuests }}</th>
-                                <th>{{ row.mealCostSum }}</th>
-                                <th>{{ row.expensesSum }} </th>
-                                <th>{{ row.nettoSum }} </th>
-                            </tr>                                            
-                        </tbody>
-                    </table>
+                <div class="columns is-centered">
+                    
+                    <div class="column is-three-fifths has-text-centered">
+
+                        <div class="field is-horizontal">                          
+                            
+                            <div class="field-body" style="">
+                                <div class="field is-narrow">
+                                    <p class="control ">
+                                        <input id="fromDate" class="input" type="date" v-model.lazy="this.dateFrom" placeholder="Fra dato">                                
+                                    </p>
+                                </div>
+                                <div class="field is-narrow">
+                                    <p class="control">
+                                        <input id="toDate" class="input" type="date" v-model.lazy="this.dateTo" placeholder="Til dato">                                
+                                    </p>
+                                </div>
+                                <div class="field is-narrow">
+                                    <p class="control">
+                                        <button id="update" class="button is-success" @click="loadStatistics()">Opdater</button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                
+                                           
+                        <table class="table is-striped">
+                            <thead>                    
+                                <tr>
+                                    <th>Navn</th>
+                                    <th>Kok</th>
+                                    <th>Deltaget</th>
+                                    <th>Gæster (voksne)</th>
+                                    <th>Gæster (børn)</th>
+                                    <th>Beløb for mad</th>
+                                    <th>Udlæg for mad</th>
+                                    <th>Netto</th>         
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="row in this.overview">
+                                    <td>{{ row.personName }}</td>
+                                    <td>{{ row.chefCount }}</td>
+                                    <td>{{ row.mealCount }}</td>
+                                    <td>{{ row.adultGuests }}</td>
+                                    <td>{{ row.childGuests }}</td>
+                                    <td>{{ row.mealCostSum }}</td>
+                                    <td>{{ row.expensesSum }} </td>
+                                    <td>{{ row.nettoSum }} </td>
+                                </tr>                                            
+                            </tbody>
+                        </table>                        
+                    </div>
                 </div>
             </section>
         </div>
@@ -53,20 +97,31 @@
 
     <script type="text/javascript">
              
-        var vm = new Vue({            
+        let vm = new Vue({            
             el: '#app',
-            data: {   
-                overview : null
+            data: {
+                pageTitle: "Buske bofælleskab",
+                pageSubtitle : "Fællesmad oversigt",
+                overview : null,
+                dateFrom : "2019-01-01",
+                dateTo: "2019-12-31"
             },
             methods : {
-                loadStatistics(meal) {
+                loadStatistics() {
+                    console.log("dateFrom: " + this.dateFrom);
                     axios
-                        .get(`${baseApiUrl}/commonmeals/statistics/overview`)
+                        .get(`${baseApiUrl}/commonmeals/statistics/overview`,
+                            {
+                                params : {
+                                    fromDate: this.dateFrom,
+                                    toDate: this.dateTo
+                                }
+                            })
                         .then(response => { 
                             this.overview = response.data;                                                               
                         })
                         .catch(e => {
-                            alert(`Error fetching shopping info for meal ${meal.id}: ${e}`)
+                            alert(`Error fetching shopping info for meal ${meal.id}: ${e}`);
                                 console.log(e);
                         });                    
                 },
@@ -74,6 +129,12 @@
             created() {
                 this.loadStatistics();                           
             },
+            mounted() {
+                var vm = this;
+                flatpickr.localize(flatpickr.l10ns.da);
+                flatpickr("#fromDate", { weekNumbers: true, onChange: function(a,b) { vm.dateFrom = b }});
+                flatpickr("#toDate", { weekNumbers: true, onChange: function(a,b) { vm.dateTo = b }});
+            }
         });
     </script>
   </body>
