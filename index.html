@@ -23,10 +23,10 @@
         <section class="section">
             <div class="container has-text-centered">
                 <h1 class="title is-hidden-mobile-bottommarginfix">
-                    <a href="javascript:window.location.href=window.location.href">{{ pageTitle }}</a>
+                    <a @click.prevent="softReload()">{{ pageTitle }}</a>
                 </h1>
                 <p class="subtitle is-hidden-mobile">
-                    <a href="javascript:window.location.href=window.location.href">{{ pageSubtitle }}</a>
+                    <a @click.prevent="softReload()">{{ pageSubtitle }}</a>
                 </p>          
             </div>
 
@@ -366,7 +366,8 @@
                             this.weekDate = response.data.weekDate,               
                             this.commonMeals = response.data.meals;
                             this.persons = response.data.persons;
-                            this.pageSubtitle = response.data.title;  
+                            this.pageSubtitle = response.data.subtitle;
+                            this.pageTitle = response.data.title;  
                             onSuccess();                                            
                         })
                         .catch(e => {
@@ -438,15 +439,18 @@
                             alert("Error saving expense: " + e)
                             console.log(e);
                         })         
-                }                    
+                },
+                softReload() {
+                    this.loadMeals("activeweek", () => { this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal)); });
+                }                
             },
             created() {
                 this.loadMeals("activeweek", () => { this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal)); });                           
             },
             data: {            
                 focusMealIdx: -1,
-                pageTitle: "Buske bofælleskab",
-                pageSubtitle : "Fællesspisning",
+                pageTitle: "Buske bofællesskab",
+                pageSubtitle : "Madplan",
                 weekDate: null,       
                 commonMeals: [],
                 persons: [],

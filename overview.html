@@ -46,17 +46,17 @@
                             <div class="field-body" style="">
                                 <div class="field is-narrow">
                                     <p class="control ">
-                                        <input id="fromDate" class="input" type="date" v-model.lazy="this.dateFrom" placeholder="Fra dato">                                
+                                        <input id="fromDate" class="input" type="date" v-model.lazy="this.fromDate" placeholder="Fra dato">                                
                                     </p>
                                 </div>
                                 <div class="field is-narrow">
                                     <p class="control">
-                                        <input id="toDate" class="input" type="date" v-model.lazy="this.dateTo" placeholder="Til dato">                                
+                                        <input id="toDate" class="input" type="date" v-model.lazy="this.toDate" placeholder="Til dato">                                
                                     </p>
                                 </div>
                                 <div class="field is-narrow">
                                     <p class="control">
-                                        <button id="update" class="button is-success" @click="loadStatistics()">Opdater</button>
+                                        <button id="update" class="button is-success" @click="loadStatistics(fromDate,toDate)">Opdater</button>
                                     </p>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                                 <tr>
                                     <th>Navn</th>
                                     <th>Kok</th>
-                                    <th>Deltaget</th>
+                                    <th>Deltager</th>
                                     <th>Gæster (voksne)</th>
                                     <th>Gæster (børn)</th>
                                     <th>Beløb for mad</th>
@@ -100,31 +100,36 @@
         let vm = new Vue({            
             el: '#app',
             data: {
-                pageTitle: "Buske bofælleskab",
+                pageTitle: "Buske bofællesskab",
                 pageSubtitle : "Fællesmad oversigt",
                 overview : null,
-                dateFrom : "2019-01-01",
-                dateTo: "2019-12-31"
+                fromDate : null,
+                toDate: null
             },
             methods : {
-                loadStatistics() {
-                    console.log("dateFrom: " + this.dateFrom);
+                loadStatistics(fromDate, toDate) {                    
                     axios
                         .get(`${baseApiUrl}/commonmeals/statistics/overview`,
                             {
                                 params : {
-                                    fromDate: this.dateFrom,
-                                    toDate: this.dateTo
+                                    fromDate: fromDate,
+                                    toDate: toDate
                                 }
                             })
                         .then(response => { 
-                            this.overview = response.data;                                                               
+                            let d = response.data; 
+                            this.overview = d.rows;
+                            this.fromDate = d.fromDate.split("T").shift();                                                              
+                            this.toDate = d.toDate.split("T").shift();
+                            this.pageTitle = d.title,
+                            this.pageSubtitle = d.subtitle 
                         })
                         .catch(e => {
-                            alert(`Error fetching shopping info for meal ${meal.id}: ${e}`);
+                            alert(`Error fetching statistics: ${e}`);
                                 console.log(e);
                         });                    
                 },
+
             },
             created() {
                 this.loadStatistics();                           
@@ -132,8 +137,8 @@
             mounted() {
                 var vm = this;
                 flatpickr.localize(flatpickr.l10ns.da);
-                flatpickr("#fromDate", { weekNumbers: true, onChange: function(a,b) { vm.dateFrom = b }});
-                flatpickr("#toDate", { weekNumbers: true, onChange: function(a,b) { vm.dateTo = b }});
+                flatpickr("#fromDate", { weekNumbers: true, onChange: function(a,b) { vm.fromDate = b }});
+                flatpickr("#toDate", { weekNumbers: true, onChange: function(a,b) { vm.toDate = b }});
             }
         });
     </script>
