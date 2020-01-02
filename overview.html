@@ -25,10 +25,17 @@
         
         <div class="container">
            
-            <section class ="section">
+            <section class="section">
                 <div class="container has-text-centered">
                     <h1 class="title is-hidden-mobile-bottommarginfix">
                         <a href="javascript:window.location.href=window.location.href">{{ pageTitle }}</a>
+                        <span class="control is-pulled-right">
+                            <button class="button is-small" @click="loadNavigationModal()" style="background-color:black;">
+                                <span class="icon is-small">
+                                    <i class="fas fa-lg fa-bars"></i>
+                                </span>
+                            </button>
+                        </span>
                     </h1>
                     <p class="subtitle is-hidden-mobile">
                         <a href="javascript:window.location.href=window.location.href">{{ pageSubtitle }}</a>
@@ -43,7 +50,7 @@
 
                         <div class="field is-horizontal">                          
                             
-                            <div class="field-body" style="">
+                            <div class="field-body">
                                 <div class="field is-narrow">
                                     <p class="control ">
                                         <input id="fromDate" class="input" type="date" v-model.lazy="this.fromDate" placeholder="Fra dato">                                
@@ -93,6 +100,45 @@
                 </div>
             </section>
         </div>
+    
+        <div id="navigationModal" class="modal" :class="{ 'is-active' : navigationModalActive }" v-if="navigationModalActive">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title has-text-centered">Navigation</p>
+                    <button class="delete" aria-label="close" @click="hideNavigationModal()"></button>
+                </header>
+                <section class="modal-card-body">                                      
+                    <div class="buttons">
+                        <button class="button is-medium is-fullwidth" @click="this.window.location.href = 'index.html'">                            
+                            <span>Gå til madplan</span>
+                            <span class="icon">
+                                <i class="fas fa-utensils"></i>
+                            </span>
+                        </button>                        
+                    </div>
+                    <div class="buttons">
+                        <button class="button is-medium is-fullwidth" @click="this.window.location.href = 'overview.html'">                            
+                            <span>Gå til opgørelse</span>
+                            <span class="icon">
+                                <i class="fas fa-coins"></i>
+                            </span>
+                        </button>     
+                    </div>
+                    <div class="buttons">
+                        <button class="button is-medium is-fullwidth" @click="">                            
+                            <span>Gå til brugervejledning</span>
+                            <span class="icon">
+                                <i class="fas fa-book"></i>
+                            </span>
+                        </button>     
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success" @click="hideNavigationModal()">Luk</button>                    
+                </footer>
+            </div>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -104,7 +150,8 @@
                 pageSubtitle : "Fællesmad oversigt",
                 overview : null,
                 fromDate : null,
-                toDate: null
+                toDate: null,
+                navigationModalActive: false
             },
             methods : {
                 loadStatistics(fromDate, toDate) {                    
@@ -129,8 +176,13 @@
                                 console.log(e);
                         });                    
                 },
-
-            },
+                loadNavigationModal() {
+                    this.navigationModalActive = true;
+                },
+                hideNavigationModal() {
+                    this.navigationModalActive = false;
+                },
+            },            
             created() {
                 this.loadStatistics();                           
             },
