@@ -34,7 +34,7 @@
     "url": "https://github.com/joha1712/cohousing.website/issues"
   },
   "homepage": "https://github.com/joha1712/cohousing.website#readme",
-  "dependencies": {    
+  "dependencies": {
     "bulma": "^0.7.1",
     "vue": "^2.5.16"
   }

@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Skattejagt</title>
+    <link rel="stylesheet" href="styles/bulma/darkly/bulmaswatch_v0.7.1.min.css">
+    <link rel="stylesheet" href="styles/bulma/bulma-extensions.min.css">    
+    <link rel="stylesheet" href="styles/style.css">
+
+    <script src="scripts/axios/axios_v0.18.0.js"></script>
+    <script defer src="scripts/fontawesome/fontawesome_solid_v5.11.2.min.js"></script>
+    <script defer src="scripts/fontawesome/fontawesome_v5.11.2.min.js"></script>
+    <script src="scripts/vue/vue_v2.5.16.js"></script>    
+    <script src="config.js"> type="module"</script>
+
+</head>
+
+<body class="is-clipped">
+    <div id="app">
+    
+        <div class="container">
+    
+            <section class="section">
+                <div class="container has-text-centered">
+                    <h1 class="title">
+                        Skattejagt #1
+                    </h1>
+                    <p class="subtitle ">
+                       Velkommen til Buske skattejagt - en skattejagt for alle 
+                    </p>
+
+                    <div class="columns">
+                        <div class="column is-half is-offset-one-quarter">
+        
+                            <div class="field is-horizontal">
+                                <div class="field-body">
+                                    <div class="field">                                
+                                        <p class="control has-icons-left">
+                                            <input class="input is-info" type="text" placeholder="Skriv kodeord" v-model="guess">
+                                            <span class="icon is-left">
+                                                <i class="fas fa-gem" aria-hidden="true"></i>
+                                            </span>
+                                        </p>
+                                    </div>
+
+                                    <div class="field">
+                                        <p class="control">
+                                            <button class="button is-success" @click="checkPassword">
+                                                Ok
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field is-horizontal" v-if="this.info != null">
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control has-icons-left">
+                                            <input class="input is-info" type="text" value="" disabled v-model="info">
+                                            <span class="icon is-left">
+                                                <i class="fas fa-gem" aria-hidden="true"></i>
+                                            </span>
+                                        </p>
+                                    </div>                                    
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </section>           
+            
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        let vm = new Vue({
+                el: '#app',
+                data: {                    
+                    guess: null,
+                    info: null,
+                },
+                methods: {
+                    checkPassword() {
+                        if (this.guess.toLowerCase().indexOf("anders and") !== -1)
+                            this.info = "Skatten er gemt ved det udgået kastanjetræ i starten af Allén";
+                        else
+                            this.info = "Desværre er kodeordet forkert - prøv igen";
+                    } 
+                }
+            });
+    </script>
+</body>
+</html>
