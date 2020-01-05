@@ -57,13 +57,19 @@
                             <div class="field is-horizontal" v-if="this.info != null">
                                 <div class="field-body">
                                     <div class="field">
-                                        <p class="control has-icons-left">
-                                            <input class="input is-info" type="text" value="" disabled v-model="info">
-                                            <span class="icon is-left">
-                                                <i class="fas fa-gem" aria-hidden="true"></i>
-                                            </span>
+                                        <p class="control">
+                                            <textarea class="input is-info" type="text" rows="7" value="" disabled v-model="info" style=" min-height: inherit; height: auto;"></textarea>                                           
                                         </p>
-                                    </div>                                    
+                                    </div>
+
+                                    <div class="field" style="visibility: hidden">
+                                        <p class="control">
+                                            <button class="button is-success">
+                                                Ok
+                                            </button>
+                                        </p>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             
@@ -87,7 +93,7 @@
                 methods: {
                     checkPassword() {
                         if (this.guess.toLowerCase().indexOf("anders and") !== -1)
-                            this.info = "Skatten er gemt ved det udgået kastanjetræ i starten af Allén";
+                            this.info = "Rigtigt! Skatten er gemt under fliset ved det udgået kastanjetræ i starten af Allén. Husk at gemme skatten igen og ta' kun en ting pr person.";
                         else
                             this.info = "Desværre er kodeordet forkert - prøv igen";
                     } 
