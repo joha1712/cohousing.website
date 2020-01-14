@@ -72,7 +72,7 @@
                                             <span class="select is-fullwidth">
                                                 <select v-model="chef.personId" @change="saveChef(chef)">
                                                     <option :value="null">Vælg {{ idx + 1 }}. kok ...</option>
-                                                    <option :value="person.id" v-for="person in persons">{{ person.name }}</option>                                            
+                                                    <option :value="person.id" v-for="person in people">{{ person.name }}</option>                                            
                                                 </select>
                                             </span>
                                             <span class="icon is-small is-left">
@@ -409,7 +409,6 @@
                 loadMeals(actionName,onSuccess) {
                     onSuccess = onSuccess || (_ => {});
                     let sortExpr = this.$route.query.s || "";
-                    console.log("sortExpr: " + sortExpr);
 
                     axios
                         .get(`${baseApiUrl}/commonmeals/list/${actionName}`, 
@@ -420,7 +419,7 @@
                         .then(response => { 
                             this.weekDate = response.data.weekDate,               
                             this.commonMeals = response.data.meals;
-                            this.persons = response.data.persons;
+                            this.people = response.data.people;
                             this.pageSubtitle = response.data.subtitle;
                             this.pageTitle = response.data.title;  
                             onSuccess();                                            
@@ -508,7 +507,7 @@
                 pageSubtitle : "Madplan",
                 weekDate: null,       
                 commonMeals: [],
-                persons: [],
+                people: [],
                 shoppingInfoModalActive: false,
                 shoppingInfo: {
                     expenses : [],
