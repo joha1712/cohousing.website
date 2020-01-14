@@ -141,7 +141,7 @@
                                  class="column is-2 is-paddingless">
                                     <p class="control">
                                         <button class="button is-small" style="border-color: #4c5759;" @click="loadGuestsRegModal(registration)">
-                                        <span class="icon is-small">
+                                        <span class="icon is-small" :class="calcGuestBtnClass(registration)">
                                             <i class="fas fa-user-plus"></i>
                                         </span>
                                         </button>
@@ -241,7 +241,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input class="input" type="text" v-model="guestsReg.guests.adults.conventional" @change="saveGuestsReg(guestsReg)">
+                                    <input class="input" type="text" v-model="guestsReg.guests.adults.conventional" @change="saveGuestsReg(guestsReg)" placeholder="[Antal]">
                                     <span class="icon is-left">                                        
                                         <i class="fas fa-drumstick-bite"></i>
                                     </span>
@@ -249,7 +249,7 @@
                             </div>
                             <div class="field is-narrow">
                                 <p class="control has-icons-left is-narrow">
-                                    <input class="input" type="text" v-model="guestsReg.guests.adults.vegetarians" @change="saveGuestsReg(guestsReg)">
+                                    <input class="input" type="text" v-model="guestsReg.guests.adults.vegetarians" @change="saveGuestsReg(guestsReg)" placeholder="[Antal vegetarer]">
                                     <span class="icon is-left">
                                         <i class="fas fa-seedling"></i>
                                     </span>                                    
@@ -265,7 +265,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <p class="control has-icons-left">
-                                    <input class="input" type="text" v-model="guestsReg.guests.children.conventional" @change="saveGuestsReg(guestsReg)">
+                                    <input class="input" type="text" v-model="guestsReg.guests.children.conventional" @change="saveGuestsReg(guestsReg)" placeholder="[Antal]">
                                     <span class="icon is-left">                                        
                                         <i class="fas fa-drumstick-bite"></i>
                                     </span>
@@ -273,7 +273,7 @@
                             </div>
                             <div class="field is-narrow">
                                 <p class="control has-icons-left is-narrow">
-                                    <input class="input" type="text" v-model="guestsReg.guests.children.vegetarians" @change="saveGuestsReg(guestsReg)">
+                                    <input class="input" type="text" v-model="guestsReg.guests.children.vegetarians" @change="saveGuestsReg(guestsReg)" placeholder="[Antal vegetarer]">
                                     <span class="icon is-left">                                       
                                         <i class="fas fa-seedling"></i>
                                     </span>                                                                   
@@ -447,11 +447,14 @@
                 calcChefClass(chef) {                
                     return chef.personId != null ? ["meal-chef-ok", "fa-check"] : "fa-user";
                 },
+                calcGuestBtnClass(registration) {
+                    return registration.guests.adults.conventional > 0 || registration.guests.adults.vegetarians > 0 || registration.guests.children.conventional > 0 || registration.guests.children.vegetarians > 0 ? "guest-btn-has-guests" : 0;
+                },
                 saveRegistration(registration) {                
                     axios
                         .put(`${baseApiUrl}/commonmeals/registrations`, registration)
                         .then(response => {
-                            console.log("Saved registration: " + registration.id);                            
+                            console.log("Saved registration: " + registration.id);                                                  
                         })                
                         .catch(e => {
                             alert("Error saving registration: " + e)

@@ -265,6 +265,10 @@ button button.is-hovered, .button button:hover {
     background: #343c3d;
 }
 
+.guest-btn-has-guests {
+    color: #00d1b2;
+}
+
 .mobile-hidden {
     display: none;
 }
