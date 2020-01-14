@@ -1,0 +1,23 @@
+baseURL: http://example.org/
+languageCode: en-us
+title: Buske Bofællesskab
+theme: cupper-hugo-theme
+
+params:
+  description: Dokumentation af fællesspisningssystemet
+  footer: Udviklet af Jonas Thyregod. Lavet via [Hugo](https://gohugo.io/) platformen ved brug af [Cupper temaet](https://github.com/zwbetz-gh/cupper-hugo-theme).
+
+menu:
+  nav:
+    - name: Hjem
+      url: /
+      weight: 1
+    - name: Madplan
+      url: /commonmeal.html
+      weight: 2
+    - name: Opgørelse
+      url: /overview.html
+      weight: 3
+    - name: Om
+      url: /about.html
+      weight: 4
