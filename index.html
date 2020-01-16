@@ -56,7 +56,7 @@
             <div class="tile is-ancestor">                
                 <div class="meal-tile tile" v-for="(commonMeal, idx2) in commonMeals" :class="calcMealTileClass(idx2)">
                     <div class="tile is-child box" style="padding-bottom:1rem;padding-top:1rem;" >
-                        <div class="box has-text-centered meal-header-box" :class="calcMealTitleClass(commonMeal.chefs)" style="margin-bottom: 0">
+                        <div class="box has-text-centered meal-header-box" :class="calcMealTitleClass(commonMeal.chefs)" style="margin-bottom: 0" @click="calcMealTitleClass(commonMeal.chefs) == 'meal-chefs-ok' ? loadShoppingInfoModal(commonMeal) : false">
                             <p class="title is-4">{{ commonMeal.dayName }}</p>
                             <p class="subtitle is-6">{{ commonMeal.dateName }}</p>                            
                         </div>
@@ -92,11 +92,8 @@
                                 <div class="column is-paddingless is-10" >
                                     <div class="field has-addons">
                                         <div class="control is-expanded">
-                                            <p class="control has-icons-left is-fullwidth">
-                                                <input class="input" type="text" v-model="commonMeal.note" @change="saveNote(commonMeal)" placeholder="[Noter]">
-                                                <span class="icon is-small is-left">
-                                                    <i class="fas fa-info"></i>
-                                                </span>
+                                            <p class="control is-fullwidth">
+                                                <input class="input" type="text" v-model="commonMeal.note" @change="saveNote(commonMeal)" placeholder="[Noter]">                                                
                                             </p>
                                         </div>
                                         <div class="control">
@@ -140,10 +137,10 @@
                                 <div
                                  class="column is-2 is-paddingless">
                                     <p class="control">
-                                        <button class="button is-small" style="border-color: #4c5759;" @click="loadGuestsRegModal(registration)">
-                                        <span class="icon is-small" :class="calcGuestBtnClass(registration)">
-                                            <i class="fas fa-user-plus"></i>
-                                        </span>
+                                        <button class="button is-small" :class="calcGuestBtnClass(registration)" @click="loadGuestsRegModal(registration)">
+                                            <span class="icon is-small" >
+                                                <i class="fas fa-user-plus"></i>
+                                            </span>
                                         </button>
                                     </p>                                        
                                 </div>                                
@@ -448,7 +445,7 @@
                     return chef.personId != null ? ["meal-chef-ok", "fa-check"] : "fa-user";
                 },
                 calcGuestBtnClass(registration) {
-                    return registration.guests.adults.conventional > 0 || registration.guests.adults.vegetarians > 0 || registration.guests.children.conventional > 0 || registration.guests.children.vegetarians > 0 ? "guest-btn-has-guests" : 0;
+                    return registration.guests.adults.conventional > 0 || registration.guests.adults.vegetarians > 0 || registration.guests.children.conventional > 0 || registration.guests.children.vegetarians > 0 ? "guest-btn-has-guests" : "guest-btn-has-guestsno-" ;
                 },
                 saveRegistration(registration) {                
                     axios

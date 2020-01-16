@@ -228,11 +228,12 @@ button button.is-hovered, .button button:hover {
 }
 
 .meal-chef-ok {
-    color: #1abc9c80 !important;
+    color: #1abc9c80 !important;    
 }
 
 .meal-chefs-ok {
     background-color: /*rgba(0, 180, 0, 0.3);*/ #1abc9c50;
+    cursor:pointer;
 }
 
 .meal-chefs-missingsome {
@@ -267,6 +268,11 @@ button button.is-hovered, .button button:hover {
 
 .guest-btn-has-guests {
     color: #00d1b2;
+    border-color: #00d1b2;
+}
+
+.guest-btn-has-no-guests {    
+    border-color: #4c5759;
 }
 
 .mobile-hidden {
