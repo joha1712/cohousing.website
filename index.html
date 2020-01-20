@@ -14,6 +14,13 @@
     <script src="scripts/vue/vue_v2.5.16.js"></script> 
     <script src="scripts/vue/vue-router_v3.1.3.js"></script> 
     <script src="config.js"> type="module"</script>
+      
+      <style>
+          .not-active {
+              pointer-events: none;
+              cursor: default;
+          }
+      </style>
     
   </head>
   
@@ -48,19 +55,22 @@
             <nav class="pagination is-visible-mobile-only" role="navigation" aria-label="pagination">
                 <a class="pagination-previous" @click="previousday()">Forrige</a>
                 <a class="pagination-next" @click="nextday()">Næste</a>
-            </nav>
+            </nav>            
 
         </section>       
 
         <section class="section" style="padding-top: 0">
             <div class="tile is-ancestor">                
-                <div class="meal-tile tile" v-for="(commonMeal, idx2) in commonMeals" :class="calcMealTileClass(idx2)">
+                <div class="meal-tile tile" v-for="(commonMeal, idx2) in commonMeals" :class="calcMealTileClass(idx2)" v-disable-all="!commonMeal.isMealOpen">
                     <div class="tile is-child box" style="padding-bottom:1rem;padding-top:1rem;" >
                         <div class="box has-text-centered meal-header-box" :class="calcMealTitleClass(commonMeal.chefs)" style="margin-bottom: 0" @click="calcMealTitleClass(commonMeal.chefs) == 'meal-chefs-ok' ? loadShoppingInfoModal(commonMeal) : false">
-                            <p class="title is-4">{{ commonMeal.dayName }}</p>
+                            <p class="title is-4">{{ commonMeal.dayName }} 
+                                <span class="icon is-pulled-right" v-if="!commonMeal.isMealOpen">
+                                    <i class="fas fa-key"></i>
+                                </span>
                             <p class="subtitle is-6">{{ commonMeal.dateName }}</p>                            
-                        </div>
-
+                        </div>                        
+                        
                         <div class="box meal-chef-box">                                                            
                                 
                             <div class="meal-chef-row columns is-mobile is-marginless" v-for="(chef, idx) in commonMeal.chefs">                                
@@ -97,7 +107,7 @@
                                             </p>
                                         </div>
                                         <div class="control">
-                                            <button type="submit" class="button" :disabled="calcMealTitleClass(commonMeal.chefs) != 'meal-chefs-ok'" @click="loadShoppingInfoModal(commonMeal)">
+                                            <button type="submit" class="button disable-all-skip" :disabled="calcMealTitleClass(commonMeal.chefs) != 'meal-chefs-ok'" @click="loadShoppingInfoModal(commonMeal)">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </span>
@@ -158,63 +168,67 @@
                     <p class="modal-card-title has-text-centered">{{ shoppingInfo.dayName }} {{ shoppingInfo.dateName }}</p>
                     <button class="delete" aria-label="close" @click="hideShoppingInfoModal()"></button>
                 </header>
-                <section class="modal-card-body">                     
-                    
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Antal</label>
+                <section class="modal-card-body">
+
+                    <div class="columns is-mobile">
+                        <div class="column is-3">
+                            <label class="label is-pulled-right">Antal</label>                                                        
                         </div>
-                        <div class="field-body">
-                            <div class="field is-narrow">
-                                <p class="control has-icons-left">
-                                    <input disabled class="input" type="text" :value="calcShoppingInfoPersonGroupText(shoppingInfo.adults)">
-                                    <span class="icon is-left">
+                        <div class="column is-4">
+                            <p class="control has-icons-left is-narrow">
+                                <input disabled class="input" type="text" :value="calcShoppingInfoPersonGroupText(shoppingInfo.adults)">
+                                <span class="icon is-left">
                                         <i class="fas fa-user"></i>
-                                    </span>
-                                </p>
-                            </div>
-                            <div class="field is-narrow">
-                                <p class="control has-icons-left is-narrow">
-                                    <input disabled class="input" type="text" :value="calcShoppingInfoPersonGroupText(shoppingInfo.children)">
-                                    <span class="icon is-left">
-                                        <i class="fas fa-child"></i>
-                                    </span>                                    
-                                </p>
-                            </div>                            
+                                </span>
+                            </p>
                         </div>
-                    </div>
-            
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Budget (kr)</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-narrow">                                    
-                                <p class="control has-icons-left">                                        
-                                    <input disabled class="input" type="text" :value="shoppingInfo.budget">                                        
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-balance-scale"></i>
-                                    </span>                                          
-                                </p>                                                                    
-                            </div>
+                        <div class="column is-4">
+                            <p class="control has-icons-left is-narrow">
+                                <input disabled class="input" type="text" :value="calcShoppingInfoPersonGroupText(shoppingInfo.children)">
+                                <span class="icon is-left">
+                                    <i class="fas fa-child"></i>
+                                </span>
+                            </p>                            
                         </div>
                     </div>
 
-                    <div class="field is-horizontal" v-for="expense in shoppingInfo.expenses">
-                        <div class="field-label">
-                            <label class="label">Indkøb (kr) {{ expense.personName }}</label>
+                    <div class="columns is-mobile" >
+                        <div class="column is-3">
+                            <label class="label is-pulled-right">Budget (kr)</label>
                         </div>
-                        <div class="field-body">
-                            <div class="field is-narrow">                                    
-                                <p class="control has-icons-left">                                        
-                                    <input class="input" type="text" v-model="expense.amount" placeholder="[Beløb]" @change="saveExpense(expense)">                                        
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-coins"></i>
-                                    </span>                                          
-                                </p>                                                                    
-                            </div>                            
-                        </div>                        
+                        <div class="column is-4">
+                            <p class="control has-icons-left">
+                                <input disabled class="input" type="text" :value="shoppingInfo.budget">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-balance-scale"></i>
+                                </span>
+                            </p>
+                        </div>
                     </div>
+
+                    <div class="columns is-mobile" v-for="expense in shoppingInfo.expenses">
+                        <div class="column is-3">
+                            <label class="label is-pulled-right">Indkøb {{ expense.personName }}</label>
+                        </div>
+                        <div class="column is-4">
+                            <p class="control has-icons-left is-narrow">
+                                <input class="input" type="text" v-model="expense.amount" placeholder="[Beløb i kr]" @change="saveExpense(expense)">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-coins"></i>
+                                </span>
+                            </p>
+                        </div>
+                    </div>                   
+
+                    <div class="columns is-mobile" v-if="activeMeal">
+                        <div class="column is-3">
+                            <label class="label is-pulled-right">Tilmelding åben</label>
+                        </div>
+                        <div class="column is-4">
+                            <input type="checkbox" id="open4reg" name="open4reg" class="switch is-rounded is-outlined switch-off-is-red" v-model="activeMeal.isMealOpen" @change="saveOpenStatus(activeMeal)" >
+                            <label for="open4reg"></label>
+                        </div>
+                    </div>                              
                 </section>
                 <footer class="modal-card-foot">
                     <button class="button is-success" @click="hideShoppingInfoModal()">Luk</button>                    
@@ -282,7 +296,7 @@
                 <footer class="modal-card-foot">
                     <button class="button is-success" @click="hideGuestsRegModal()">Luk</button>                    
                 </footer>
-                </div>
+            </div>
         </div>
 
         <div id="navigationModal" class="modal" :class="{ 'is-active' : navigationModalActive }" v-if="navigationModalActive">
@@ -326,16 +340,66 @@
     </div>  
     </div>
 
-    <script type="text/javascript">
+    <script type="text/javascript">       
+        
         var router = new VueRouter({
             mode: 'history',
             routes: []
         });
-      
+
+        // AutoUpdate timer (1000 milliseconds = 1 second)
+        var inactivityTime = function (timeout, callback) {
+            var timerId;
+            window.addEventListener('load', resetTimer, true);
+            var events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+            events.forEach(function(name) {
+                document.addEventListener(name, resetTimer, true); 
+            });
+
+            function doIdleAction() {
+                console.log("doIdleAction");
+                timerId = setTimeout(doIdleAction, timeout);
+                callback();
+            }
+
+            function resetTimer() {                
+                clearTimeout(timerId);
+                timerId = setTimeout(doIdleAction, timeout);                
+            }
+        };
+
+        var disableAll = function (el, binding) {
+                const tags = ["input", "button", "textarea", "select", "label"];
+                tags.forEach(tagName => {
+                    const nodes = el.getElementsByTagName(tagName);
+                    let deactivate = binding.value;
+                    for (let i = 0; i < nodes.length; i++) {
+                        let node = nodes[i];
+                        if (node.classList.contains("disable-all-skip"))
+                            continue;                                                
+                        if (deactivate) {
+                            node.classList.add("not-active");
+                        } else {
+                            node.classList.remove("not-active");                            
+                        }
+                    }
+                });
+            };
+
+        Vue.directive("disable-all", {
+            // When all the children of the parent component have been updated         
+            componentUpdated : function(el, binding) {                
+                disableAll(el, binding);
+            },
+            inserted : function(el, binding) {                
+                disableAll(el, binding);
+            }            
+        });
+        
         var vm = new Vue({
             router,
             el: '#app',
-            methods: {
+            methods: {               
                 nextday() {                               
                     if (this.focusMealIdx >= this.commonMeals.length -1) {
                         this.loadMeals("nextweek", () => { this.focusMealIdx = 0; });                    
@@ -361,17 +425,19 @@
                             }
                         )
                         .then(response => { 
+                            this.shoppingInfo = response.data;
+                            this.activeMeal = meal;
                             this.shoppingInfoModalActive = true;
-                            this.shoppingInfo = response.data;                                     
                         })
                         .catch(e => {
-                            alert(`Error fetching shopping info for meal ${meal.id}: ${e}`)
+                            alert(`Error fetching shopping info for meal ${meal.id}: ${e}`);
                                 console.log(e);
                         });                    
                 },
-                hideShoppingInfoModal(meal) {
-                    this.shoppingInfoModalActive = false;
+                hideShoppingInfoModal(meal) {                    
                     this.shoppingInfo = null;
+                    this.activeMeal = null;
+                    this.shoppingInfoModalActive = false;
                 },
                 loadGuestsRegModal(registration) {
                     this.guestsRegModalActive = true;
@@ -394,10 +460,10 @@
                     this.loadMeals("nextweek");
                 },
                 calcShoppingInfoPersonGroupText(personGroup) {
-                    if (personGroup.vegetarians == 0) {
+                    if (personGroup.vegetarians === 0) {
                         return personGroup.total;
                     }
-                    if (personGroup.vegetarians == 1) {
+                    if (personGroup.vegetarians === 1) {
                         return `${personGroup.total} (1 vegetar)`;
                     }
                     return `${personGroup.total} (${personGroup.vegetarians} vegetarer)`;
@@ -413,26 +479,32 @@
                                     params : { weekDate : this.weekDate, sortExpr : sortExpr }
                             }
                         )
-                        .then(response => { 
-                            this.weekDate = response.data.weekDate,               
-                            this.commonMeals = response.data.meals;
+                        .then(response => {
+
+                            response.data.meals.forEach(meal => {
+                                meal.isMealOpen = meal.status === "OPEN";
+                            });
+
+                            this.weekDate = response.data.weekDate;
+                            this.commonMeals = response.data.meals;                            
                             this.people = response.data.people;
                             this.pageSubtitle = response.data.subtitle;
                             this.pageTitle = response.data.title;  
+                            this.commonMeals[0].enabled = false;
                             onSuccess();                                            
                         })
                         .catch(e => {
-                            alert(`Error fetching meals for ${actionName}: ${e}`)
+                            alert(`Error fetching meals for ${actionName}: ${e}`);
                                 console.log(e);
                         })
 
                 },
                 calcMealRowClass(regNo) {
-                    return (regNo % 2 == 0) ? "meal-reservation-row-even" : "meal-reservation-row-odd";                
+                    return (regNo % 2 === 0) ? "meal-reservation-row-even" : "meal-reservation-row-odd";                
                 },
                 calcMealTileClass(mealIdx) {                
                     // Only show the active meal on mobile displays
-                    return mealIdx == this.focusMealIdx  
+                    return mealIdx === this.focusMealIdx  
                         ? ""
                         : "is-hidden-mobile";                    
                 },
@@ -454,7 +526,7 @@
                             console.log("Saved registration: " + registration.id);                                                  
                         })                
                         .catch(e => {
-                            alert("Error saving registration: " + e)
+                            alert("Error saving registration: " + e);
                             console.log(e);
                         })
                 },
@@ -468,7 +540,7 @@
                             console.log("Saved chef: " + chef.id + " personId: " + chef.personId);
                         })                   
                         .catch(e => {
-                            alert("Error saving chef: " + e)
+                            alert("Error saving chef: " + e);
                             console.log(e);
                         })                    
                 },
@@ -479,9 +551,20 @@
                             console.log("Saved note: " + meal.id + " note: " + meal.note);
                         })                   
                         .catch(e => {
-                            alert("Error saving chef: " + e)
+                            alert("Error saving chef: " + e);
                             console.log(e);
                         })         
+                },
+                saveOpenStatus(meal) {
+                    axios
+                        .put(`${baseApiUrl}/commonmeals/status`, { id : meal.id, status : meal.isMealOpen ? "OPEN" : "CLOSED" })
+                        .then(response => {
+                            console.log("Saved meal status: " + meal.id + " status: " + meal.isMealOpen);
+                        })
+                        .catch(e => {
+                            alert("Error saving meal status: " + e);
+                            console.log(e);
+                        })
                 },
                 saveExpense(expense) {
                     axios
@@ -490,7 +573,7 @@
                             console.log(`Saved expense ${expense.id} amount: ${expense.amount} for ${expense.personName}`);
                         })                   
                         .catch(e => {
-                            alert("Error saving expense: " + e)
+                            alert("Error saving expense: " + e);
                             console.log(e);
                         })         
                 },
@@ -499,7 +582,17 @@
                 }                
             },
             created() {
-                this.loadMeals("activeweek", () => { this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal)); });                           
+                this.loadMeals("activeweek", () => { this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal)); });  
+                let autoupdate = this.$route.query.autoupdate;
+
+                if (autoupdate) {
+                    let interval = 1000 * autoupdate;
+                    console.log("Autoupdate: " + interval);
+                    inactivityTime(interval, () => { 
+                        this.softReload();
+                        window.scrollTo(0, 0);
+                    });
+                }                      
             },
             data: {            
                 focusMealIdx: -1,
@@ -512,13 +605,17 @@
                 shoppingInfo: {
                     expenses : [],
                     adults : {total : null, vegetarians : null},
-                    children : {total : null, vegetarians : null}
+                    children : {total : null, vegetarians : null}                    
+                },
+                activeMeal: {
+                    isMealOpen : true,        
                 },
                 guestsRegModalActive : false,
                 guestsReg : null,
                 navigationModalActive : false,
+                enabled: true
             } 
-        });
+        });        
     </script>
   </body>
 </html>

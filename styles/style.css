@@ -54,6 +54,22 @@ select select.is-hovered, .select select:hover {
     color: white;
 }
 
+.switch[type=checkbox].is-outlined.switch-off-is-red+label::after, .switch[type=checkbox].is-outlined.switch-off-is-red+label:after {
+    background-color: #e74c3c;
+}
+
+.switch[type=checkbox].is-outlined.switch-off-is-red+label::before, .switch[type=checkbox].is-outlined.switch-off-is-red+label:before {
+    border-color: #e74c3c;
+}
+
+.switch[type=checkbox].is-outlined.switch-off-is-red:checked+label::after, .switch[type=checkbox].is-outlined.switch-off-is-red:checked+label:after {
+    background-color: #00d1b2;
+}
+
+.switch[type=checkbox].is-outlined.switch-off-is-red:checked+label::before, .switch[type=checkbox].is-outlined.switch-off-is-red:checked+label:before {
+    border-color: #00d1b2;
+}
+
 /**********************************************************************/
 /* button styles */
 
@@ -248,10 +264,8 @@ button button.is-hovered, .button button:hover {
     margin-bottom: 0.5rem !important;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem ;
-    padding-left: 0rem !important;
-    padding-right: 0rem !important;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-left: 0 !important;
+    padding-right: 0 !important;    
 }
 
 .meal-reservation-row {    
@@ -277,6 +291,14 @@ button button.is-hovered, .button button:hover {
 
 .mobile-hidden {
     display: none;
+}
+
+#shoppingInfoModal div section div.columns {
+    margin-bottom:0;margin-top:0;
+}
+
+#shoppingInfoModal div section div.columns div.column{
+    padding-top:0;padding-right:0;
 }
   
 @media screen and (max-width:768px) {  
