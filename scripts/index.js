@@ -1,6 +1,6 @@
 import VueRouter from "vue-router"
 import Vue from "vue"
-import TheMealPlan from "./components/TheMealPlan.vue"
+import TheMealPlan from "../components/TheMealPlan.vue"
 
 // Vue Router
 const router = new VueRouter({

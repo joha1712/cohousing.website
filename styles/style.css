@@ -345,11 +345,11 @@ fieldset {
 
 /* flatpickr overrides */
 .flatpickr-calendar {
-    background-color: #282f2f;
+    background-color: #282f2f !important;
 }
 
 span.flatpickr-weekday {
-    font-size: 15px;
+    font-size: 15px !important;
 }
 
 .flatpickr-current-month .flatpickr-monthDropdown-months,
@@ -359,7 +359,7 @@ span.flatpickr-weekday {
 }
 
 .flatpickr-weekdays {
-    background-color: rgb(63, 68, 88);    
+    background-color: rgb(63, 68, 88) !important;    
 }
 
 .flatpickr-day.selected, .flatpickr-day.startRange, 
@@ -371,8 +371,6 @@ span.flatpickr-weekday {
 .flatpickr-day.selected.prevMonthDay, .flatpickr-day.startRange.prevMonthDay, 
 .flatpickr-day.endRange.prevMonthDay, .flatpickr-day.selected.nextMonthDay, 
 .flatpickr-day.startRange.nextMonthDay, .flatpickr-day.endRange.nextMonthDay {
-    background-color : rgb(46, 204, 113);
-    border-color : rgb(46, 204, 113);
+    background-color : rgb(46, 204, 113) !important;
+    border-color : rgb(46, 204, 113) !important;
 }
-
-
