@@ -115,13 +115,17 @@
 </template>
 
 <script>
-  import Vue from "vue"
-  import axios from 'axios'
+  import Vue from "vue";
+  import axios from "axios";
   import flatpickr from "flatpickr";
-  import { danish } from "flatpickr/dist/l10n/da.js"
+  import { danish } from "flatpickr/dist/l10n/da.js";
   import styles from "flatpickr/dist/themes/dark.css";
-  import { config } from "../scripts/config.js"
-
+  import { config } from "../scripts/config.js";
+  import faBook from "@fortawesome/free-solid-svg-icons/faBook";
+  import faCoins from "@fortawesome/free-solid-svg-icons/faCoins";
+  import faUtensils from "@fortawesome/free-solid-svg-icons/faUtensils";
+  import faBars from "@fortawesome/free-solid-svg-icons/faBars";
+  
   export default {
     data: function () {
       return {
