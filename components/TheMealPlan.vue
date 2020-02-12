@@ -314,23 +314,30 @@
 </template>
 
 <script>
-    import VueRouter from "vue-router"
-    import Vue from "vue"
-    import axios from 'axios'
-    import { config } from "../scripts/config.js"
-    import faUser from "@fortawesome/free-solid-svg-icons/faUser";
-    import faCheck from "@fortawesome/free-solid-svg-icons/faCheck";
-    import faKey from "@fortawesome/free-solid-svg-icons/faKey";
-    import faBars from "@fortawesome/free-solid-svg-icons/faBars";
-    import faShoppingBasket from "@fortawesome/free-solid-svg-icons/faShoppingBasket";
-    import faUserPlus from "@fortawesome/free-solid-svg-icons/faUserPlus";
-    import faChild from "@fortawesome/free-solid-svg-icons/faChild";
-    import faBalanceScale from "@fortawesome/free-solid-svg-icons/faBalanceScale";
-    import faCoins from "@fortawesome/free-solid-svg-icons/faCoins";
-    import faDrumstickBite from "@fortawesome/free-solid-svg-icons/faDrumstickBite";
-    import faUtensils from "@fortawesome/free-solid-svg-icons/faUtensils";
-    import faSeedling from "@fortawesome/free-solid-svg-icons/faSeedling";
-    import faBook from "@fortawesome/free-solid-svg-icons/faBook";
+    import VueRouter from "vue-router";
+    import Vue from "vue";
+    import axios from "axios";
+    import { config } from "../scripts/config.js";
+    import bulmaSwitch from "bulma-switch";
+    import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+    import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
+    import { faKey } from "@fortawesome/free-solid-svg-icons/faKey";
+    import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
+    import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons/faShoppingBasket";
+    import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
+    import { faChild } from "@fortawesome/free-solid-svg-icons/faChild";
+    import { faBalanceScale } from "@fortawesome/free-solid-svg-icons/faBalanceScale";
+    import { faCoins } from "@fortawesome/free-solid-svg-icons/faCoins";
+    import { faDrumstickBite } from "@fortawesome/free-solid-svg-icons/faDrumstickBite";
+    import { faUtensils } from "@fortawesome/free-solid-svg-icons/faUtensils";
+    import { faSeedling } from "@fortawesome/free-solid-svg-icons/faSeedling";
+    import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
+    import { library } from "@fortawesome/fontawesome-svg-core";
+    import { dom } from '@fortawesome/fontawesome-svg-core'
+
+    library.add(faUser, faCheck,faKey, faBars, faShoppingBasket, faUserPlus, faChild, faBalanceScale, faCoins, faDrumstickBite, faUtensils, faSeedling, faBook);
+
+    dom.watch();
     
     // AutoUpdate timer (1000 milliseconds = 1 second)
     var inactivityTime = function (timeout, callback) {

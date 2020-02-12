@@ -121,10 +121,16 @@
   import { danish } from "flatpickr/dist/l10n/da.js";
   import styles from "flatpickr/dist/themes/dark.css";
   import { config } from "../scripts/config.js";
-  import faBook from "@fortawesome/free-solid-svg-icons/faBook";
-  import faCoins from "@fortawesome/free-solid-svg-icons/faCoins";
-  import faUtensils from "@fortawesome/free-solid-svg-icons/faUtensils";
-  import faBars from "@fortawesome/free-solid-svg-icons/faBars";
+  import { library } from "@fortawesome/fontawesome-svg-core";
+  import { dom } from '@fortawesome/fontawesome-svg-core'
+  import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
+  import { faCoins } from "@fortawesome/free-solid-svg-icons/faCoins";
+  import { faUtensils } from "@fortawesome/free-solid-svg-icons/faUtensils";
+  import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
+  
+  // add font awesome icons
+  library.add(faBook, faCoins, faUtensils, faBars);
+  dom.watch();
   
   export default {
     data: function () {
