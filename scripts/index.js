@@ -1,6 +1,6 @@
 import VueRouter from "vue-router"
 import Vue from "vue"
-import TheMealPlan from "../components/TheMealPlan.vue"
+import MealPlan from "../views/MealPlan.vue"
 
 // Vue Router
 const router = new VueRouter({
@@ -48,5 +48,5 @@ Vue.prototype.$window = window;
 var vm = new Vue({ 
     router,
     el: "#app",
-    render: h => h(TheMealPlan)
+    render: h => h(MealPlan)
 });

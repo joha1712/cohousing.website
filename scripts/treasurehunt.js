@@ -1,9 +1,9 @@
 import Vue from "vue"
-import MealOverview from "../views/MealOverview.vue"
+import Treasurehunt from "../views/Treasurehunt.vue"
 
 Vue.prototype.$window = window;
 
 var vm = new Vue({     
     el: "#app",
-    render: h => h(MealOverview)
+    render: h => h(Treasurehunt)
 });

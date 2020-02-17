@@ -1,96 +1,19 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skattejagt</title>
-    <link rel="stylesheet" href="styles/bulma/darkly/bulmaswatch_v0.7.1.min.css">    
+    <title>Buske skattejagt</title>
+    <link rel="stylesheet" href="styles/bulma/darkly/bulmaswatch_v0.7.1.min.css">
     <link rel="stylesheet" href="styles/style.css">
 
-    <script src="scripts/axios/axios_v0.18.0.js"></script>   
-    <script src="scripts/vue/vue_v2.5.16.js"></script>    
-    <script src="scripts/config.js"></script>
+    <script defer src="scripts/treasurehunt.js"></script>
 </head>
 
 <body class="is-clipped">
-    <div id="app">    
-        <div class="container">    
-            <section class="section">
-                <div class="container has-text-centered">
-                    <h1 class="title">
-                        Skattejagt #1
-                    </h1>
-                    <p class="subtitle ">
-                       Velkommen til Buske skattejagt - en skattejagt for alle 
-                    </p>
-
-                    <div class="columns">
-                        <div class="column is-half is-offset-one-quarter">
-        
-                            <div class="field is-horizontal">
-                                <div class="field-body">
-                                    <div class="field">                                
-                                        <p class="control has-icons-left">
-                                            <input class="input is-info" type="text" placeholder="Skriv kodeord" v-model="guess">
-                                            <span class="icon is-left">
-                                                <i class="fas fa-gem" aria-hidden="true"></i>
-                                            </span>
-                                        </p>
-                                    </div>
-
-                                    <div class="field">
-                                        <p class="control">
-                                            <button class="button is-success" @click="checkPassword">
-                                                Ok
-                                            </button>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="field is-horizontal" v-if="this.info != null">
-                                <div class="field-body">
-                                    <div class="field">
-                                        <p class="control">
-                                            <textarea class="input is-info" type="text" rows="7" value="" disabled v-model="info" style=" min-height: inherit; height: auto;"></textarea>                                           
-                                        </p>
-                                    </div>
-
-                                    <div class="field" style="visibility: hidden">
-                                        <p class="control">
-                                            <button class="button is-success">
-                                                Ok
-                                            </button>
-                                        </p>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>           
-            
-        </div>
+    <div id="app">
     </div>
-
-    <script type="text/javascript">
-
-        let vm = new Vue({
-                el: '#app',
-                data: {                    
-                    guess: null,
-                    info: null,
-                },
-                methods: {
-                    checkPassword() {
-                        if (this.guess.toLowerCase().indexOf("anders and") !== -1)
-                            this.info = "Rigtigt! Skatten er gemt under fliset ved det udgået kastanjetræ i starten af Allén. Husk at gemme skatten igen og ta' kun en ting pr person.";
-                        else
-                            this.info = "Desværre er kodeordet forkert - prøv igen";
-                    } 
-                }
-            });
-    </script>
 </body>
+
 </html>
