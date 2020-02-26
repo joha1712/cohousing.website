@@ -72,67 +72,30 @@
       </div>
     </section>
 
-    <div id="navigationModal" class="modal" :class="{ 'is-active' : navigationModalActive }"
-      v-if="navigationModalActive">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title has-text-centered">Navigation</p>
-          <button class="delete" aria-label="close" @click="hideNavigationModal()"></button>
-        </header>
-        <section class="modal-card-body">
-          <div class="buttons">
-            <button class="button is-medium is-fullwidth" @click="this.window.location.href = 'index.html'">
-              <span>Gå til madplan</span>
-              <span class="icon">
-                <i class="fas fa-utensils"></i>
-              </span>
-            </button>
-          </div>
-          <div class="buttons">
-            <button class="button is-medium is-fullwidth" @click="this.window.location.href = 'overview.html'">
-              <span>Gå til opgørelse</span>
-              <span class="icon">
-                <i class="fas fa-coins"></i>
-              </span>
-            </button>
-          </div>
-          <div class="buttons">
-            <button class="button is-medium is-fullwidth" @click="">
-              <span>Gå til brugervejledning</span>
-              <span class="icon">
-                <i class="fas fa-book"></i>
-              </span>
-            </button>
-          </div>
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-success" @click="hideNavigationModal()">Luk</button>
-        </footer>
-      </div>
-    </div>
+    <mainmenu id="navigationModal" @close="hideNavigationModal()" :class="{ 'is-active' : navigationModalActive }" v-if="navigationModalActive" />
   </div>
 </template>
 
 <script>
   import Vue from "vue";
   import axios from "axios";
+  import mainmenu from "../components/MainMenu.vue"
   import flatpickr from "flatpickr";
   import { danish } from "flatpickr/dist/l10n/da.js";
   import styles from "flatpickr/dist/themes/dark.css";
   import { config } from "../scripts/config.js";
   import { library } from "@fortawesome/fontawesome-svg-core";
   import { dom } from '@fortawesome/fontawesome-svg-core'
-  import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
-  import { faCoins } from "@fortawesome/free-solid-svg-icons/faCoins";
-  import { faUtensils } from "@fortawesome/free-solid-svg-icons/faUtensils";
   import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
-  
+    
   // add font awesome icons
-  library.add(faBook, faCoins, faUtensils, faBars);
+  library.add(faBars);
   dom.watch();
   
   export default {
+    components: {
+      mainmenu
+    },
     data: function () {
       return {
         pageTitle: "Buske bofællesskab",
@@ -165,10 +128,10 @@
             console.log(e);
           });
       },
-      loadNavigationModal() {
+      loadNavigationModal() {        
         this.navigationModalActive = true;
       },
-      hideNavigationModal() {
+      hideNavigationModal() {        
         this.navigationModalActive = false;
       },
     },

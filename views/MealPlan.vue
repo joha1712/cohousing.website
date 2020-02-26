@@ -272,44 +272,8 @@
             </div>
         </div>
 
-        <div id="navigationModal" class="modal" :class="{ 'is-active' : navigationModalActive }" v-if="navigationModalActive">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-                <header class="modal-card-head">
-                    <p class="modal-card-title has-text-centered">Navigation</p>
-                    <button class="delete" aria-label="close" @click="hideNavigationModal()"></button>
-                </header>
-                <section class="modal-card-body">                                      
-                    <div class="buttons">
-                        <button class="button is-medium is-fullwidth" @click="navigateTo('index.html')">
-                            <span>Gå til madplan</span>
-                            <span class="icon">
-                                <i class="fas fa-utensils"></i>
-                            </span>
-                        </button>                        
-                    </div>
-                    <div class="buttons">
-                        <button class="button is-medium is-fullwidth" @click="navigateTo('overview.html')">                            
-                            <span>Gå til opgørelse</span>
-                            <span class="icon">
-                                <i class="fas fa-coins"></i>
-                            </span>
-                        </button>     
-                    </div>
-                    <div class="buttons">
-                        <button class="button is-medium is-fullwidth" @click="">                            
-                            <span>Gå til brugervejledning</span>
-                            <span class="icon">
-                                <i class="fas fa-book"></i>
-                            </span>
-                        </button>     
-                    </div>
-                </section>
-                <footer class="modal-card-foot">
-                    <button class="button is-success" @click="hideNavigationModal()">Luk</button>                    
-                </footer>
-                </div>
-        </div>
+        <mainmenu id="navigationModal" :class="{ 'is-active' : navigationModalActive }" v-if="navigationModalActive" @close="hideNavigationModal()" />
+            
     </div>
 </template>
 
@@ -317,6 +281,7 @@
     import VueRouter from "vue-router";
     import Vue from "vue";
     import axios from "axios";
+    import mainmenu from "../components/MainMenu.vue"
     import { config } from "../scripts/config.js";
     import bulmaSwitch from "bulma-switch";
     import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
@@ -329,13 +294,11 @@
     import { faBalanceScale } from "@fortawesome/free-solid-svg-icons/faBalanceScale";
     import { faCoins } from "@fortawesome/free-solid-svg-icons/faCoins";
     import { faDrumstickBite } from "@fortawesome/free-solid-svg-icons/faDrumstickBite";
-    import { faUtensils } from "@fortawesome/free-solid-svg-icons/faUtensils";
     import { faSeedling } from "@fortawesome/free-solid-svg-icons/faSeedling";
-    import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
     import { library } from "@fortawesome/fontawesome-svg-core";
     import { dom } from '@fortawesome/fontawesome-svg-core'
 
-    library.add(faUser, faCheck,faKey, faBars, faShoppingBasket, faUserPlus, faChild, faBalanceScale, faCoins, faDrumstickBite, faUtensils, faSeedling, faBook);
+    library.add(faUser, faCheck,faKey, faBars, faShoppingBasket, faUserPlus, faChild, faBalanceScale, faCoins, faDrumstickBite, faSeedling);
 
     dom.watch();
     
@@ -361,6 +324,9 @@
     };
 
     export default {
+        components: {
+            mainmenu
+        },
         methods: {
             navigateTo(url) {
                 window.location.href = url;
