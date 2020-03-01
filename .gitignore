@@ -62,3 +62,4 @@ typings/
 
 # Skip build files
 dist/
+.cache/
