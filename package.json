@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "parcel index.html overview.html treasurehunt.html",
-    "build": "npm run clean && parcel build index.html overview.html treasurehunt.html & npm run package",
+    "build": "npm run clean && parcel build index.html overview.html treasurehunt.html && npm run package",
     "clean": "shx rm -rf dist",
     "package": "shx cp -R LICENSE dist"
   },
