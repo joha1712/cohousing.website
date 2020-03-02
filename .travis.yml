@@ -20,7 +20,7 @@ notifications:
     on_failure: always
 
 before_deploy:
-  - sed 's,https://localhost:44302/api,$BASEAPI_URL,g' .env
+  - sed -i 's,https://localhost:44302/api,$BASEAPI_URL,' .env
   - npm run build
   - cd dist && zip -rv9 $TRAVIS_PACKAGE_FILE . && cd ..
 deploy:
