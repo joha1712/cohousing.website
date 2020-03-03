@@ -530,16 +530,13 @@
             this.loadMeals("activeweek", () => {
                 this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal));
             });
-            let autoupdate = this.$route.query.autoupdate;
+            let autoupdate = this.$route.query.autoupdate || 600;
 
-            if (autoupdate) {
-                let interval = 1000 * autoupdate;
-                console.log("Autoupdate: " + interval);
-                inactivityTime(interval, () => {
-                    this.softReload();
-                    window.scrollTo(0, 0);
-                });
-            }
+            let interval = 1000 * autoupdate;
+            inactivityTime(interval, () => {
+                this.softReload();
+                window.scrollTo(0, 0);
+            });
         },
         data: function () {
             return {
