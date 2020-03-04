@@ -300,6 +300,11 @@ button button.is-hovered, .button button:hover {
 #shoppingInfoModal div section div.columns div.column{
     padding-top:0;padding-right:0;
 }
+
+.is-paddingless-top-bottom {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
   
 @media screen and (max-width:768px) {  
     .is-hidden-mobile-bottommarginfix {

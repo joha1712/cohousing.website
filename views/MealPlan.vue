@@ -45,12 +45,9 @@
                             <p class="subtitle is-6">{{ commonMeal.dateName }}</p>                            
                         </div>                        
                         
-                        <div class="box meal-chef-box">                                                            
-                                
-                            <div class="meal-chef-row columns is-mobile is-marginless" v-for="(chef, idx) in commonMeal.chefs">                                
-                                
-                                <div class="column is-paddingless is-1" ></div>
-                                <div class="column is-paddingless is-10" >
+                        <div class="box meal-chef-box">
+                            <div class="meal-chef-row columns is-mobile is-marginless" v-for="(chef, idx) in commonMeal.chefs">
+                                <div class="column is-paddingless-top-bottom is-12" >
                                     <div class="field">
                                         <p class="control is-expanded has-icons-left">
                                             <span class="select is-fullwidth">
@@ -65,15 +62,10 @@
                                         </p>
                                     </div>                                  
                                 </div>
-
-                                <div class="column is-paddingless is-1"></div>
-                            </div>   
+                            </div>
                             
-                            <div class="meal-chef-row columns is-mobile is-marginless">                                
-                                
-                                <div class="column is-paddingless is-1" ></div>
-                            
-                                <div class="column is-paddingless is-10" >
+                            <div class="meal-chef-row columns is-mobile is-marginless">
+                                <div class="column is-paddingless-top-bottom is-12" >
                                     <div class="field has-addons">
                                         <div class="control is-expanded">
                                             <p class="control is-fullwidth">
@@ -89,22 +81,16 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="column is-paddingless is-1"></div>
                             </div>
                         </div>
 
                         <div class="box meal-reservation-group" v-for="group in commonMeal.registrationGroups">
-                            
                             <div class="meal-reservation-row columns is-vcentered is-mobile is-marginless" v-for="(registration, index) in group.registrations" :class="calcMealRowClass(registration.regNo)">
-                                
-                                <div class="column is-paddingless is-1"></div>
-                                
-                                <div class="column is-4 is-paddingless">								
-                                    {{ registration.personName }}							
+                                <div class="column is-5 is-paddingless-top-bottom">
+                                    {{ registration.personName }}
                                 </div>                            
                                 
-                                <div class="column is-5 is-paddingless">                                
+                                <div class="column is-5 is-paddingless-top-bottom">
                                     <!-- This level is need to keep the radio together in the column (so it doesn´t split line when resizing) -->
                                     <nav class="level">                                         
                                         <div class="level-left">
@@ -119,8 +105,8 @@
                                 </div>
 
                                 <div
-                                 class="column is-2 is-paddingless">
-                                    <p class="control">
+                                 class="column is-2 is-paddingless-top-bottom">
+                                    <p class="control is-pulled-right">
                                         <button class="button is-small" :class="calcGuestBtnClass(registration)" @click="loadGuestsRegModal(registration)">
                                             <span class="icon is-small" >
                                                 <i class="fas fa-user-plus"></i>
