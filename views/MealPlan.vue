@@ -5,25 +5,26 @@
             <div class="columns is-centered is-mobile" style="margin-bottom: 0">
                 <div class="column is-12 has-text-centered">
                     <h1 class="title is-hidden-mobile-bottommarginfix">
+                        <span class="control is-pulled-left is-hidden-mobile">
+                            <button class="button is-normal" @click="previousweek()" style="background-color:black;">Forrige uge</button>
+                        </span>
                         <a @click.prevent="softReload()">{{ pageTitle }}</a>
-                        <span class="control is-pulled-right">
-                            <button class="button is-small" @click="loadNavigationModal()" style="background-color:black;">
-                                <span class="icon is-small">
+                        <span class="control is-pulled-right is-hidden-mobile">
+                            <button class="button is-normal" @click="nextweek()" style="background-color:black;">Næste uge</button>
+                        </span>
+                        <span class="control is-pulled-right" style="margin-left:6px;margin-right:6px;">
+                            <button class="button is-normal" @click="loadNavigationModal()" style="background-color:black;">
+                                <span class="icon is-normal">
                                     <i class="fas fa-lg fa-bars"></i>
                                 </span>
                             </button>
-                        </span>
+                        </span>                        
                     </h1>
                     <p class="subtitle is-hidden-touch">
                         <a @click.prevent="softReload()">{{ pageSubtitle }}</a>
-                    </p>   
-                </div>       
+                    </p>
+                </div>
             </div>
-
-            <nav class="pagination is-hidden-mobile" role="navigation" aria-label="pagination">
-                <a class="pagination-previous" @click="previousweek()">Forrige uge</a>
-                <a class="pagination-next" @click="nextweek()">Næste uge</a>
-            </nav>
 
             <nav class="pagination is-visible-mobile-only" role="navigation" aria-label="pagination">
                 <a class="pagination-previous" @click="previousday()">Forrige</a>
