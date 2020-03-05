@@ -304,6 +304,8 @@ button button.is-hovered, .button button:hover {
 .is-paddingless-top-bottom {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
 }
   
 @media screen and (max-width:768px) {  
