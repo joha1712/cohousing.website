@@ -37,14 +37,5 @@ deploy:
     skip_cleanup: true
     on:      
       branch: release
-  
-  - provider: releases
-    api_key: $GITHUBPAGES_RELEASETOKEN
-    file: "$TRAVIS_PACKAGE_FILE"
-    skip_cleanup: true
-    name: "v$TRAVIS_PACKAGE_VERSION"
-    draft: false
-    on:      
-      branch: release
 after_deploy:
   - rm $TRAVIS_PACKAGE_FILE
