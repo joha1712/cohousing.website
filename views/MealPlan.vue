@@ -105,25 +105,22 @@
                                 </div>
 
                               <div class="column is-3 is-paddingless-top-bottom">
-                                <div class="field is-horizontal">
-                                  
-                                  <p class="control" style="margin-right:4px">
+                                  <p class="control is-pulled-right">
+                                    <button class="button is-small" :class="calcGuestBtnClass(registration)" @click="loadGuestsRegModal(registration)">
+                                          <span class="icon is-small" >
+                                              <i class="fas fa-user-plus"></i>
+                                          </span>
+                                    </button>
+                                  </p>
+                                
+                                  <p class="control is-pulled-right" style="margin-right:4px">
                                     <button class="button is-small" :class="{ 'takeaway-btn-is-active' : registration.takeAway }" @click="saveRegistrationTakeAway(registration)">
                                     <span class="icon is-small" >
                                         <i class="fas fa-shopping-basket"></i>
                                     </span>
                                     </button>
                                   </p>
-                                  <p class="control">
-                                    <button class="button is-small" :class="calcGuestBtnClass(registration)" @click="loadGuestsRegModal(registration)">
-                                        <span class="icon is-small" >
-                                            <i class="fas fa-user-plus"></i>
-                                        </span>
-                                    </button>
-                                  </p>
-                                </div>
-                              </div>                              
-                                    
+                              </div>
                             </div>
                         </div>                                                   
                     </div>
