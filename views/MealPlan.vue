@@ -90,7 +90,7 @@
                                     {{ registration.personName }}
                                 </div>                            
                                 
-                                <div class="column is-4 is-paddingless-top-bottom">
+                                <div class="column is-3 is-paddingless-top-bottom">
                                     <!-- This level is need to keep the radio together in the column (so it doesn't split line when resizing) -->
                                     <nav class="level">                                         
                                         <div class="level-left">
@@ -104,7 +104,7 @@
                                     </nav>                                
                                 </div>
 
-                              <div class="column is-3 is-paddingless-top-bottom">
+                              <div class="column is-4 is-paddingless-top-bottom">
                                   <p class="control is-pulled-right">
                                     <button class="button is-small" :class="calcGuestBtnClass(registration)" @click="loadGuestsRegModal(registration)">
                                           <span class="icon is-small" >
