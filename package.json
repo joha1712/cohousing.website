@@ -29,6 +29,9 @@
   "bugs": {
     "url": "https://github.com/joha1712/cohousing.website/issues"
   },
+  "posthtml": {
+    "recognizeSelfClosing": true
+  },
   "homepage": "https://github.com/joha1712/cohousing.website#readme",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",

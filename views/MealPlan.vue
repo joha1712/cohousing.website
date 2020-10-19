@@ -37,7 +37,7 @@
             <div class="tile is-ancestor">                
                 <div class="meal-tile tile" v-for="(commonMeal, idx2) in commonMeals" :class="calcMealTileClass(idx2)" v-disable-all="!commonMeal.isMealOpen">
                     <div class="tile is-child box" style="padding-bottom:1rem;padding-top:1rem;" >
-                        <div class="box has-text-centered meal-header-box" :class="calcMealTitleClass(commonMeal.chefs)" style="margin-bottom: 0" @click="calcMealTitleClass(commonMeal.chefs) == 'meal-chefs-ok' ? loadShoppingInfoModal(commonMeal) : false">
+                        <div class="box has-text-centered meal-header-box" :class="calcMealTitleClass(commonMeal.chefs)" style="margin-bottom: 0" @click="calcMealTitleClass(commonMeal.chefs) === 'meal-chefs-ok' ? showShoppingInfoModal(commonMeal) : false">
                             <p class="title is-4">{{ commonMeal.dayName }} 
                                 <span class="icon is-pulled-right" v-if="!commonMeal.isMealOpen">
                                     <i class="fas fa-key"></i>
@@ -73,7 +73,7 @@
                                             </p>
                                         </div>
                                         <div class="control">
-                                            <button type="submit" class="button disable-all-skip" :disabled="calcMealTitleClass(commonMeal.chefs) != 'meal-chefs-ok'" @click="loadShoppingInfoModal(commonMeal)">
+                                            <button type="submit" class="button disable-all-skip" :disabled="calcMealTitleClass(commonMeal.chefs) !== 'meal-chefs-ok'" @click="showShoppingInfoModal(commonMeal)">
                                                 <span class="icon is-small is-left">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </span>
@@ -84,14 +84,14 @@
                             </div>
                         </div>
 
-                        <div class="box meal-reservation-group" v-for="group in commonMeal.registrationGroups">
+                        <div class="box meal-reservation-group" v-for="(group, gIdx) in commonMeal.registrationGroups">
                             <div class="meal-reservation-row columns is-vcentered is-mobile is-marginless" v-for="(registration, index) in group.registrations" :class="calcMealRowClass(registration.regNo)">
                                 <div class="column is-5 is-paddingless-top-bottom">
                                     {{ registration.personName }}
                                 </div>                            
                                 
-                                <div class="column is-5 is-paddingless-top-bottom">
-                                    <!-- This level is need to keep the radio together in the column (so it doesn´t split line when resizing) -->
+                                <div class="column is-4 is-paddingless-top-bottom">
+                                    <!-- This level is need to keep the radio together in the column (so it doesn't split line when resizing) -->
                                     <nav class="level">                                         
                                         <div class="level-left">
                                             <div class="level-item">
@@ -104,16 +104,26 @@
                                     </nav>                                
                                 </div>
 
-                                <div
-                                 class="column is-2 is-paddingless-top-bottom">
-                                    <p class="control is-pulled-right">
-                                        <button class="button is-small" :class="calcGuestBtnClass(registration)" @click="loadGuestsRegModal(registration)">
-                                            <span class="icon is-small" >
-                                                <i class="fas fa-user-plus"></i>
-                                            </span>
-                                        </button>
-                                    </p>                                        
-                                </div>                                
+                              <div class="column is-3 is-paddingless-top-bottom">
+                                <div class="field is-horizontal">
+                                  
+                                  <p class="control" style="margin-right:4px">
+                                    <button class="button is-small" :class="{ 'takeaway-btn-is-active' : registration.takeAway }" @click="saveRegistrationTakeAway(registration)">
+                                    <span class="icon is-small" >
+                                        <i class="fas fa-shopping-basket"></i>
+                                    </span>
+                                    </button>
+                                  </p>
+                                  <p class="control">
+                                    <button class="button is-small" :class="calcGuestBtnClass(registration)" @click="loadGuestsRegModal(registration)">
+                                        <span class="icon is-small" >
+                                            <i class="fas fa-user-plus"></i>
+                                        </span>
+                                    </button>
+                                  </p>
+                                </div>
+                              </div>                              
+                                    
                             </div>
                         </div>                                                   
                     </div>
@@ -260,6 +270,8 @@
         </div>
 
         <mainmenu id="navigationModal" :class="{ 'is-active' : navigationModalActive }" v-if="navigationModalActive" @close="hideNavigationModal()" />
+
+        <alertbox id="alertBox" :message="alertBoxMessage" header="Øv - der skete en fejl!" :class="{ 'is-active' : alertBoxActive }" v-if="alertBoxActive" @close="hideAlertBox()" />
             
     </div>
 </template>
@@ -269,6 +281,7 @@
     import Vue from "vue";
     import axios from "axios";
     import mainmenu from "../components/MainMenu.vue"
+    import alertbox from "../components/AlertBox.vue"
     import { config } from "../scripts/config.js";
     import bulmaSwitch from "bulma-switch";
     import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
@@ -312,7 +325,8 @@
 
     export default {
         components: {
-            mainmenu
+            mainmenu,
+            alertbox
         },
         methods: {
             navigateTo(url) {
@@ -342,7 +356,7 @@
                 });
 
             },
-            loadShoppingInfoModal(meal) {
+            showShoppingInfoModal(meal) {
                 axios
                     .get(`${config.baseApiUrl}/commonmeals/shoppinginfo`, {
                         params: {
@@ -364,6 +378,13 @@
                 this.activeMeal = null;
                 this.shoppingInfoModalActive = false;
             },
+            showAlertBox(message) {
+              this.showAlertBoxMessage = message;
+              this.alertBoxActive = true;           
+            },
+            hideAlertBox(message) {              
+              this.alertBoxActive = false;
+            },
             loadGuestsRegModal(registration) {
                 this.guestsRegModalActive = true;
                 this.guestsReg = registration;
@@ -373,7 +394,7 @@
                 this.guestsReg = null;
             },
             loadNavigationModal() {
-                this.navigationModalActive = true;
+                this.navigationModalActive = true;                
             },
             hideNavigationModal() {
                 this.navigationModalActive = false;
@@ -417,7 +438,7 @@
                         this.commonMeals[0].enabled = false;
                         onSuccess();
                     })
-                    .catch(e => {
+                    .catch(e => {                        
                         alert(`Error fetching meals for ${actionName}: ${e}`);
                         console.log(e);
                     })
@@ -441,18 +462,43 @@
                 return chef.personId != null ? ["meal-chef-ok", "fa-check"] : "fa-user";
             },
             calcGuestBtnClass(registration) {
-                return registration.guests.adults.conventional > 0 || registration.guests.adults.vegetarians > 0 || registration.guests.children.conventional > 0 || registration.guests.children.vegetarians > 0 ? "guest-btn-has-guests" : "guest-btn-has-guestsno-";
-            },
-            saveRegistration(registration) {
+                return registration.guests.adults.conventional > 0 || registration.guests.adults.vegetarians > 0 || registration.guests.children.conventional > 0 || registration.guests.children.vegetarians > 0 ? "guest-btn-has-guests" : "guest-btn-has-guestsno";
+            },                     
+            saveRegistration(registration, newReg) {              
+                // Use newReg if given
+                newReg = newReg || registration;
+
+                // Make sure take away is not enabled alone!
+                newReg.takeAway = newReg.attending ? newReg.takeAway : false;
+                
                 axios
-                    .put(`${config.baseApiUrl}/commonmeals/registrations`, registration)
-                    .then(response => {
+                    .put(`${config.baseApiUrl}/commonmeals/registrations`, newReg)
+                    .then(response => {                        
                         console.log("Saved registration: " + registration.id);
+                        // Copy back changes (because they are ok)
+                        Object.keys(newReg).forEach(function (key) {
+                            Vue.set(registration, key, newReg[key]);
+                          });                        
                     })
-                    .catch(e => {
-                        alert("Error saving registration: " + e);
+                    .catch(e => {   
+                        let isFullMeal = e.response && e.response.data && e.response.data.errorCode === 1100;
+                        this.alertBoxMessage = isFullMeal ? "Måltidet er fyldt op - måske du har lyst til Take Away?" : e.message;
+                        this.alertBoxActive = true;
+                        
+                        // HACK!!!!
+                        if (isFullMeal) {
+                          registration.attending = false;
+                          registration.takeAway = false;
+                        }
                         console.log(e);
                     })
+            },
+            saveRegistrationTakeAway(registration) {
+              let clone = Vue.util.extend({}, registration);
+              clone.takeAway = !registration.takeAway; // Toggle takeaway flag
+              clone.attending = clone.takeAway ? true : clone.attending; // toggle attending flag (if necessary)
+              console.log("clone.attending: " + clone.attending + "  clone.takeAway: " + clone.takeAway);
+              this.saveRegistration(registration, clone);              
             },
             saveGuestsReg(reg) {
                 this.saveRegistration(reg);
@@ -515,7 +561,7 @@
         },
         created() {
             this.loadMeals("activeweek", () => {
-                this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal));
+                this.focusMealIdx = Math.max(0, this.commonMeals.findIndex(x => x.isActiveMeal));                
             });
             let autoupdate = this.$route.query.autoupdate || 600;
 
@@ -524,7 +570,7 @@
                 this.softReload();
                 window.scrollTo(0, 0);
             });
-        },
+        },        
         data: function () {
             return {
                 focusMealIdx: -1,
@@ -551,7 +597,8 @@
                 guestsRegModalActive: false,
                 guestsReg: null,
                 navigationModalActive: false,
-                enabled: true
+                alertBoxActive: false,
+                alertBoxMessage: "",
             };
         }
     };

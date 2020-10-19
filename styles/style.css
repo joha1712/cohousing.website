@@ -289,6 +289,15 @@ button button.is-hovered, .button button:hover {
     border-color: #4c5759;
 }
 
+.takeaway-btn-is-active {
+    color: #00d1b2 !important;    
+    border-color: #00d1b2 !important;
+}
+
+.takeaway-btn-is-not-active {
+    border-color: #8c9b9d;
+}
+
 .mobile-hidden {
     display: none;
 }

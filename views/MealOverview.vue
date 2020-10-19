@@ -79,7 +79,7 @@
 <script>
   import Vue from "vue";
   import axios from "axios";
-  import mainmenu from "../components/MainMenu.vue"
+  import mainmenu from "../components/MainMenu.vue"  
   import flatpickr from "flatpickr";
   import { danish } from "flatpickr/dist/l10n/da.js";
   import styles from "flatpickr/dist/themes/dark.css";
@@ -94,7 +94,7 @@
   
   export default {
     components: {
-      mainmenu
+      mainmenu      
     },
     data: function () {
       return {
