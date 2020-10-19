@@ -116,7 +116,7 @@
                                   <p class="control is-pulled-right" style="margin-right:4px">
                                     <button class="button is-small" :class="{ 'takeaway-btn-is-active' : registration.takeAway }" @click="saveRegistrationTakeAway(registration)">
                                     <span class="icon is-small" >
-                                        <i class="fas fa-shopping-basket"></i>
+                                        <i class="fas fa-shipping-fast"></i>
                                     </span>
                                     </button>
                                   </p>
@@ -292,10 +292,11 @@
     import { faCoins } from "@fortawesome/free-solid-svg-icons/faCoins";
     import { faDrumstickBite } from "@fortawesome/free-solid-svg-icons/faDrumstickBite";
     import { faSeedling } from "@fortawesome/free-solid-svg-icons/faSeedling";
+    import { faShippingFast } from "@fortawesome/free-solid-svg-icons/faShippingFast";
     import { library } from "@fortawesome/fontawesome-svg-core";
     import { dom } from '@fortawesome/fontawesome-svg-core'
 
-    library.add(faUser, faCheck,faKey, faBars, faShoppingBasket, faUserPlus, faChild, faBalanceScale, faCoins, faDrumstickBite, faSeedling);
+    library.add(faUser, faCheck,faKey, faBars, faShoppingBasket, faUserPlus, faChild, faBalanceScale, faCoins, faDrumstickBite, faSeedling, faShippingFast );
 
     dom.watch();
     
