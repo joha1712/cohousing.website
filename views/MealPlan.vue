@@ -105,7 +105,7 @@
                                 </div>
 
                               <div class="column is-4 is-paddingless-top-bottom">
-                                  <p class="control is-pulled-right">
+                                  <p class="control is-pulled-right" style="margin-right:2px;margin-left:2px">
                                     <button class="button is-small" :class="calcGuestBtnClass(registration)" @click="loadGuestsRegModal(registration)">
                                           <span class="icon is-small" >
                                               <i class="fas fa-user-plus"></i>
@@ -113,7 +113,7 @@
                                     </button>
                                   </p>
                                 
-                                  <p class="control is-pulled-right" style="margin-right:4px">
+                                  <p class="control is-pulled-right" style="margin-right:2px;margin-left:2px">
                                     <button class="button is-small" :class="{ 'takeaway-btn-is-active' : registration.takeAway }" @click="saveRegistrationTakeAway(registration)">
                                     <span class="icon is-small" >
                                         <i class="fas fa-shipping-fast"></i>
@@ -274,29 +274,27 @@
 </template>
 
 <script>
-    import VueRouter from "vue-router";
-    import Vue from "vue";
-    import axios from "axios";
-    import mainmenu from "../components/MainMenu.vue"
-    import alertbox from "../components/AlertBox.vue"
-    import { config } from "../scripts/config.js";
-    import bulmaSwitch from "bulma-switch";
-    import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
-    import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
-    import { faKey } from "@fortawesome/free-solid-svg-icons/faKey";
-    import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
-    import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons/faShoppingBasket";
-    import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
-    import { faChild } from "@fortawesome/free-solid-svg-icons/faChild";
-    import { faBalanceScale } from "@fortawesome/free-solid-svg-icons/faBalanceScale";
-    import { faCoins } from "@fortawesome/free-solid-svg-icons/faCoins";
-    import { faDrumstickBite } from "@fortawesome/free-solid-svg-icons/faDrumstickBite";
-    import { faSeedling } from "@fortawesome/free-solid-svg-icons/faSeedling";
-    import { faShippingFast } from "@fortawesome/free-solid-svg-icons/faShippingFast";
-    import { library } from "@fortawesome/fontawesome-svg-core";
-    import { dom } from '@fortawesome/fontawesome-svg-core'
+import Vue from "vue";
+import axios from "axios";
+import mainmenu from "../components/MainMenu.vue"
+import alertbox from "../components/AlertBox.vue"
+import bulmaSwitch from "bulma-switch";
+import {config} from "../scripts/config.js";
+import {faUser} from "@fortawesome/free-solid-svg-icons/faUser";
+import {faCheck} from "@fortawesome/free-solid-svg-icons/faCheck";
+import {faKey} from "@fortawesome/free-solid-svg-icons/faKey";
+import {faBars} from "@fortawesome/free-solid-svg-icons/faBars";
+import {faShoppingBasket} from "@fortawesome/free-solid-svg-icons/faShoppingBasket";
+import {faUserPlus} from "@fortawesome/free-solid-svg-icons/faUserPlus";
+import {faChild} from "@fortawesome/free-solid-svg-icons/faChild";
+import {faBalanceScale} from "@fortawesome/free-solid-svg-icons/faBalanceScale";
+import {faCoins} from "@fortawesome/free-solid-svg-icons/faCoins";
+import {faDrumstickBite} from "@fortawesome/free-solid-svg-icons/faDrumstickBite";
+import {faSeedling} from "@fortawesome/free-solid-svg-icons/faSeedling";
+import {faShippingFast} from "@fortawesome/free-solid-svg-icons/faShippingFast";
+import {dom, library} from "@fortawesome/fontawesome-svg-core";
 
-    library.add(faUser, faCheck,faKey, faBars, faShoppingBasket, faUserPlus, faChild, faBalanceScale, faCoins, faDrumstickBite, faSeedling, faShippingFast );
+library.add(faUser, faCheck,faKey, faBars, faShoppingBasket, faUserPlus, faChild, faBalanceScale, faCoins, faDrumstickBite, faSeedling, faShippingFast );
 
     dom.watch();
     
@@ -479,8 +477,8 @@
                           });                        
                     })
                     .catch(e => {   
-                        let isFullMeal = e.response && e.response.data && e.response.data.errorCode === 1100;
-                        this.alertBoxMessage = isFullMeal ? "Måltidet er fyldt op - måske du har lyst til Take Away?" : e.message;
+                        let isFullMeal = e.response && e.response.data && (e.response.data.errorCode === 1100 || e.response.data.errorCode === 1105);
+                        this.alertBoxMessage = isFullMeal ? ("Måltidet er fyldt op" + (e.response.data.errorCode === 1100 ? " - måske du har lyst til Take Away?" : " for Take Away")) : e.message;
                         this.alertBoxActive = true;
                         
                         // HACK!!!!
